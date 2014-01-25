@@ -5,6 +5,7 @@ public var chaseSpeed : float = 3f;
 public var chaseWaitTime : float = 5f;
 public var patrolWaitTime : float = 1f;
 public var patrolWayPoints : Transform[];
+public var myTransform : Transform;
 
 private var enemySight : EnemySight;
 private var nav : NavMeshAgent;
@@ -19,6 +20,7 @@ function Awake() {
 	enemySight = GetComponent(EnemySight);
 	nav = GetComponent(NavMeshAgent);
 	player = GameObject.FindGameObjectWithTag(Tags.player).transform;
+	myTransform = transform;
 	lastPlayerSighting = GameObject.FindGameObjectWithTag(Tags.gameController).GetComponent(LastPlayerSighting);
 }
 
@@ -28,6 +30,8 @@ function Start () {
 }
 
 function Update () {
+	myTransform.position += transform.forward * nav.speed * Time.deltaTime;
+
 	if(enemySight.playerInSight || enemySight.personalLastSighting != lastPlayerSighting.resetPosition) {
 		Chasing();
 	} else {
