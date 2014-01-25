@@ -187,7 +187,6 @@ function Awake () {
 }
 
 private function UpdateFunction () {
-	Debug.Log("" + isBirdman + " " + inDraft);
 	// We copy the actual velocity into a temporary variable that we can manipulate.
 	var velocity : Vector3 = movement.velocity;
 	
