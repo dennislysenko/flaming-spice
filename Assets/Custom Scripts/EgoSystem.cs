@@ -202,8 +202,10 @@ public class MinerEgo : CharacterEgo {
 
 
 public class EgoSystem : MonoBehaviour {
-	public static int maxSwitches = 5;
-	public static int switchesLeft = maxSwitches;
+	public int maxSwitches = 5;
+	public static int switchesLeft;
+
+	float timeSinceLastDoorChange = 0.3f;
 
 	public Texture2D standard;
 	public Texture2D thief; 
@@ -249,6 +251,7 @@ public class EgoSystem : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
+		switchesLeft = maxSwitches;
 		currentlyChangingEgo = false;
 
 		standardEgo = new StandardEgo();
@@ -292,6 +295,8 @@ public class EgoSystem : MonoBehaviour {
 
 	// Update is called once per frame
 	void Update () {
+		timeSinceLastDoorChange += Time.deltaTime;
+
 		// Handle ego-changing button presses
 		if (!currentlyChangingEgo && switchesLeft > 0) {
 			//GUITexture guiTexture = GUITexture.FindObjectOfType<GUITexture>();
@@ -322,7 +327,7 @@ public class EgoSystem : MonoBehaviour {
 			}
 		}
 
-		if (Input.GetKey ("e")) {
+		if (Input.GetKey ("e") && timeSinceLastDoorChange >= 0.3f) {
 			RaycastHit forwardLookHit;
 			if (Camera.current) {
 				// Debug.DrawRay (transform.position + Vector3.up * 0.5f, Camera.current.transform.forward * 200, Color.black);
@@ -334,10 +339,12 @@ public class EgoSystem : MonoBehaviour {
 					} else if (collider.transform.root.gameObject.tag == "UnlockedDoor") {
 						Transform tmpRoot = collider.transform.root;
 						tmpRoot.gameObject.GetComponent<DoorState>().Toggle ();
+						timeSinceLastDoorChange = 0;
 					}
 				}
 			}
 		}
+
 		if (GameObject.FindGameObjectWithTag ("Player").GetComponent<CharacterMotor>().isDead)
 			Reset ();
 
