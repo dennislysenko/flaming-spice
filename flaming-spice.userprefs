@@ -1,8 +1,18 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="MonoDevelop.Default" />
+<<<<<<< HEAD
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Custom Scripts\ExitTrigger.js">
+    <Files>
+      <File FileName="Assets\Custom Scripts\EgoSystem.cs" Line="346" Column="1" />
+      <File FileName="Assets\Standard Assets\Character Controllers\Sources\Scripts\FPSInputController.js" Line="1" Column="1" />
+      <File FileName="Assets\Custom Scripts\Thief1Cube.js" Line="12" Column="36" />
+      <File FileName="Assets\Custom Scripts\ExitTrigger.js" Line="12" Column="40" />
+      <File FileName="Assets\Custom Scripts\LightFollowPlayer.cs" Line="9" Column="38" />
+=======
   <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Custom Scripts\EgoSystem.cs">
     <Files>
       <File FileName="Assets\Custom Scripts\EgoSystem.cs" Line="1" Column="1" />
+>>>>>>> 7b3f1d13d03d23f2fd649c20324cbafad5550ebc
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
