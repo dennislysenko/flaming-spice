@@ -167,6 +167,12 @@ var sliding : CharacterMotorSliding = CharacterMotorSliding();
 var grounded : boolean = true;
 
 @System.NonSerialized
+var inDraft : boolean = false;
+
+@System.NonSerialized
+var isBirdman : boolean = false;
+
+@System.NonSerialized
 var groundNormal : Vector3 = Vector3.zero;
 
 private var lastGroundNormal : Vector3 = Vector3.zero;
@@ -360,7 +366,7 @@ private function ApplyInputVelocityChange (velocity : Vector3) {
 		desiredVelocity.y = 0;
 	}
 	
-	if (grounded)
+	if (grounded || (inDraft && isBirdman))
 		desiredVelocity = AdjustGroundVelocityToNormal(desiredVelocity, groundNormal);
 	else
 		velocity.y = 0;
@@ -373,7 +379,7 @@ private function ApplyInputVelocityChange (velocity : Vector3) {
 	}
 	// If we're in the air and don't have control, don't apply any velocity change at all.
 	// If we're on the ground and don't have control we do apply it - it will correspond to friction.
-	if (grounded || canControl)
+	if (grounded || canControl || (inDraft && isBirdman))
 		velocity += velocityChangeVector;
 	
 	if (grounded) {
@@ -396,7 +402,7 @@ private function ApplyGravityAndJumping (velocity : Vector3) {
 	if (inputJump && jumping.lastButtonDownTime < 0 && canControl)
 		jumping.lastButtonDownTime = Time.time;
 	
-	if (grounded)
+	if (grounded || (inDraft && isBirdman))
 		velocity.y = Mathf.Min(0, velocity.y) - movement.gravity * Time.deltaTime;
 	else {
 		velocity.y = movement.velocity.y - movement.gravity * Time.deltaTime;
@@ -416,13 +422,13 @@ private function ApplyGravityAndJumping (velocity : Vector3) {
 		velocity.y = Mathf.Max (velocity.y, -movement.maxFallSpeed);
 	}
 		
-	if (grounded) {
+	if (grounded || (inDraft && isBirdman)) {
 		// Jump only if the jump button was pressed down in the last 0.2 seconds.
 		// We use this check instead of checking if it's pressed down right now
 		// because players will often try to jump in the exact moment when hitting the ground after a jump
 		// and if they hit the button a fraction of a second too soon and no new jump happens as a consequence,
 		// it's confusing and it feels like the game is buggy.
-		if (jumping.enabled && canControl && (Time.time - jumping.lastButtonDownTime < 0.2)) {
+		if (jumping.enabled && (canControl || (inDraft && isBirdman)) && (Time.time - jumping.lastButtonDownTime < 0.2)) {
 			grounded = false;
 			jumping.jumping = true;
 			jumping.lastStartTime = Time.time;
