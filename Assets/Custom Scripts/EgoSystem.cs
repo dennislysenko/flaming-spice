@@ -205,6 +205,15 @@ public class EgoSystem : MonoBehaviour {
 	public static int maxSwitches = 5;
 	public static int switchesLeft = maxSwitches;
 
+	public Texture2D standard;
+	public Texture2D thief; 
+	public Texture2D inventor;
+	public Texture2D birdman;
+	public Texture2D ninja;
+	public Texture2D miner;
+	public Texture2D electrician;
+	public GUITexture egoDisplay;
+
 	bool currentlyChangingEgo;
 	CharacterEgo currentEgo;
 	CharacterEgo standardEgo;
@@ -251,6 +260,16 @@ public class EgoSystem : MonoBehaviour {
 		// Miner Ego should NOT deinit
 		
 		currentEgo = standardEgo;
+
+
+		//standard = (Texture2D)Resources.Load ("Images/Standard.png");
+		//thief = (Texture2D)Resources.Load ("Images/Thief.png"); 
+		//inventor = (Texture2D)Resources.Load ("Images/Inventor.png");
+		//birdman = (Texture2D)Resources.Load ("Images/Birdman.png");
+		//ninja = (Texture2D)Resources.Load ("Images/Ninja.png");
+		//miner = (Texture2D)Resources.Load ("Images/Miner.png");
+		//electrician = (Texture2D)Resources.Load ("Images/Electrician.png");
+
 	}
 
 	void Reset () {
@@ -271,18 +290,27 @@ public class EgoSystem : MonoBehaviour {
 	void Update () {
 		// Handle ego-changing button presses
 		if (!currentlyChangingEgo) {
+			//GUITexture guiTexture = GUITexture.FindObjectOfType<GUITexture>();
+			//GameObject guiTexture = GameObject.FindGameObjectWithTag ("EgoDisplay");
 			CharacterEgo changeEgo = null;
 			if (Input.GetKey ("1")) {
 				changeEgo = standardEgo;
+				egoDisplay.texture = standard;
 			} else if (Input.GetKey ("2")) {
 				changeEgo = thiefEgo;
+				egoDisplay.texture = thief;
 			} else if (Input.GetKey ("3")) {
 				changeEgo = birdmanEgo;
+				egoDisplay.texture = birdman;
 			} else if (Input.GetKey ("4")) {
 				changeEgo = inventorEgo;
+				egoDisplay.texture = inventor;
 			} else if (Input.GetKey ("5")) {
 				changeEgo = minerEgo;
+				egoDisplay.texture = miner;
 			}
+
+
 
 			if (changeEgo != null) {
 				
