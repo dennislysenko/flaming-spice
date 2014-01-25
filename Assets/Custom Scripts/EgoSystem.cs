@@ -145,6 +145,20 @@ public class InventorEgo : CharacterEgo {
 	}
 }
 
+public class MinerEgo : CharacterEgo {
+	public override void Init(EgoSystem parent) {
+		//GameObject player = GameObject.FindGameObjectWithTag("Player");
+		GameObject.FindWithTag ("MinerLight").gameObject.light.intensity = 0.2f;
+
+		parent.setCurrentlyChangingEgo (false);
+	}
+
+	public override void DeInit(EgoSystem parent) {
+		//GameObject player = GameObject.FindGameObjectWithTag("Player");
+		GameObject.FindWithTag ("MinerLight").gameObject.light.intensity = 0;
+	}
+}
+
 public class EgoSystem : MonoBehaviour {
 	bool currentlyChangingEgo;
 	CharacterEgo currentEgo;
@@ -183,10 +197,12 @@ public class EgoSystem : MonoBehaviour {
 		thiefEgo = new ThiefEgo();
 		birdmanEgo = new BirdmanEgo();
 		inventorEgo = new InventorEgo ();
-		//minerEgo = new MinerEgo ();
+		minerEgo = new MinerEgo ();
 
+		// Thief Ego should NOT deinit
 		birdmanEgo.DeInit (this);
 		inventorEgo.DeInit (this);
+		minerEgo.DeInit (this);
 		
 		currentEgo = standardEgo;
 	}
@@ -204,6 +220,8 @@ public class EgoSystem : MonoBehaviour {
 				changeEgo = birdmanEgo;
 			} else if (Input.GetKey ("4")) {
 				changeEgo = inventorEgo;
+			} else if (Input.GetKey ("5")) {
+				changeEgo = minerEgo;
 			}
 
 			if (changeEgo != null) {
