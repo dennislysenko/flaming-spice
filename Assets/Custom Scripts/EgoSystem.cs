@@ -42,7 +42,6 @@ public class ThiefEgo : CharacterEgo {
 				}
 
 				if (!(doorRotateyPart == null || leftHinge == null)) {
-					Debug.Log ("Rotating door!");
 					doorRotateyPart.RotateAround (leftHinge.position, leftHinge.up, 90);
 				}
 			}
@@ -73,7 +72,6 @@ public class ThiefEgo : CharacterEgo {
 				}
 				
 				if (!(doorRotateyPart == null || leftHinge == null)) {
-					Debug.Log ("Rotating door!");
 					doorRotateyPart.RotateAround (leftHinge.position, leftHinge.up, -90);
 				}
 			}
@@ -126,6 +124,16 @@ public class InventorEgo : CharacterEgo {
 			}
 		}
 
+		GameObject player = GameObject.FindGameObjectWithTag("Player");
+		CharacterMotor mtr = player.GetComponent<CharacterMotor> ();
+		if (mtr != null && mtr.movement != null) {
+			float newSpeed = 3.5f;
+
+			mtr.movement.maxForwardSpeed = newSpeed;
+			mtr.movement.maxSidewaysSpeed = newSpeed;
+			mtr.movement.maxBackwardsSpeed = newSpeed;
+		}
+
 		parent.setCurrentlyChangingEgo (false);
 	}
 
@@ -142,6 +150,16 @@ public class InventorEgo : CharacterEgo {
 					}
 				}
 			}
+		}
+
+		GameObject player = GameObject.FindGameObjectWithTag("Player");
+		CharacterMotor mtr = player.GetComponent<CharacterMotor> ();
+		if (mtr != null && mtr.movement != null) {
+			float newSpeed = 6.0f;
+			
+			mtr.movement.maxForwardSpeed = newSpeed;
+			mtr.movement.maxSidewaysSpeed = newSpeed;
+			mtr.movement.maxBackwardsSpeed = newSpeed;
 		}
 	}
 }
