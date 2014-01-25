@@ -214,6 +214,8 @@ public class EgoSystem : MonoBehaviour {
 	public Texture2D electrician;
 	public GUITexture egoDisplay;
 
+	public GUIText switchesLeftText;
+
 	bool currentlyChangingEgo;
 	CharacterEgo currentEgo;
 	CharacterEgo standardEgo;
@@ -231,7 +233,7 @@ public class EgoSystem : MonoBehaviour {
 	}
 
 	public void setCurrentEgo(CharacterEgo changeEgo) {
-		if (changeEgo == currentEgo || switchesLeft <= 0) {
+		if (changeEgo == currentEgo) {
 			return;
 		}
 
@@ -242,6 +244,7 @@ public class EgoSystem : MonoBehaviour {
 
 		currentEgo = changeEgo;
 		switchesLeft--;
+		switchesLeftText.text = "Ego Switches Left: " + switchesLeft;
 	}
 
 	// Use this for initialization
@@ -261,6 +264,7 @@ public class EgoSystem : MonoBehaviour {
 		
 		currentEgo = standardEgo;
 
+		switchesLeftText.text = "Ego Switches Left: " + switchesLeft;
 
 		//standard = (Texture2D)Resources.Load ("Images/Standard.png");
 		//thief = (Texture2D)Resources.Load ("Images/Thief.png"); 
@@ -289,7 +293,7 @@ public class EgoSystem : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		// Handle ego-changing button presses
-		if (!currentlyChangingEgo) {
+		if (!currentlyChangingEgo && switchesLeft > 0) {
 			//GUITexture guiTexture = GUITexture.FindObjectOfType<GUITexture>();
 			//GameObject guiTexture = GameObject.FindGameObjectWithTag ("EgoDisplay");
 			CharacterEgo changeEgo = null;
