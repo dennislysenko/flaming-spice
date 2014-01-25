@@ -117,9 +117,9 @@ public class InventorEgo : CharacterEgo {
 				MeshRenderer jesus = child.GetComponent<MeshRenderer>();
 				if (jesus) {
 					if (child.tag.Equals("InnerDebris")) {
-						child.active = false;
+						child.gameObject.active = false;
 					} else if (child.tag.Equals("HiddenObject")) {
-						child.active = true;
+						child.gameObject.active = true;
 					}
 				}
 			}
@@ -152,6 +152,7 @@ public class EgoSystem : MonoBehaviour {
 	CharacterEgo thiefEgo;
 	CharacterEgo birdmanEgo;
 	CharacterEgo inventorEgo;
+	CharacterEgo minerEgo;
 
 	public void setCurrentlyChangingEgo(bool changing) {
 		currentlyChangingEgo = changing;
@@ -182,6 +183,7 @@ public class EgoSystem : MonoBehaviour {
 		thiefEgo = new ThiefEgo();
 		birdmanEgo = new BirdmanEgo();
 		inventorEgo = new InventorEgo ();
+		//minerEgo = new MinerEgo ();
 
 		birdmanEgo.DeInit (this);
 		inventorEgo.DeInit (this);
