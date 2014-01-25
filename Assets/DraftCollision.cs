@@ -11,8 +11,7 @@ public class DraftCollision : MonoBehaviour {
 			player = other.gameObject;
 
 			CharacterMotor mtr = other.GetComponent<CharacterMotor>();
-			mtr.jumping.baseHeight = 1.5f;
-			mtr.birdman = true;
+			mtr.inDraft = true;
 		}
 	}
 
@@ -22,8 +21,7 @@ public class DraftCollision : MonoBehaviour {
 			player = null;
 
 			CharacterMotor mtr = other.GetComponent<CharacterMotor>();
-			mtr.jumping.baseHeight = 1;
-			mtr.birdman = false;
+			mtr.inDraft = false;
 		}
 	}
 
