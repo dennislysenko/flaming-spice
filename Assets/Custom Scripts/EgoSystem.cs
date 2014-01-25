@@ -202,8 +202,8 @@ public class MinerEgo : CharacterEgo {
 
 
 public class EgoSystem : MonoBehaviour {
-	public static int maxSwitches = 5;
-	public static int switchesLeft = maxSwitches;
+	public int maxSwitches = 5;
+	public static int switchesLeft;
 
 	float timeSinceLastDoorChange = 0.3f;
 
@@ -251,6 +251,7 @@ public class EgoSystem : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
+		switchesLeft = maxSwitches;
 		currentlyChangingEgo = false;
 
 		standardEgo = new StandardEgo();
