@@ -425,6 +425,7 @@ private function ApplyGravityAndJumping (velocity : Vector3) {
 
 	if (grounded) {
 		canAirJump = true;
+		}
 	if (grounded || (inDraft && isBirdman)) {
 		// Jump only if the jump button was pressed down in the last 0.2 seconds.
 		// We use this check instead of checking if it's pressed down right now
