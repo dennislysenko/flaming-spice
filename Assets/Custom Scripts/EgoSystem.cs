@@ -18,6 +18,7 @@ public class StandardEgo : CharacterEgo {
 }
 
 public class ThiefEgo : CharacterEgo {
+
 	public override void Init(EgoSystem parent) {
 		GameObject[] doors = GameObject.FindGameObjectsWithTag("LockedDoor");
 		foreach (GameObject door in doors) {
@@ -81,13 +82,17 @@ public class ThiefEgo : CharacterEgo {
 
 public class BirdmanEgo : CharacterEgo {
 	public override void Init(EgoSystem parent) {
-
+		GameObject player = GameObject.FindGameObjectWithTag("Player");
+		CharacterMotor mtr = player.GetComponent<CharacterMotor>();
+		mtr.isBirdman = true;
 
 		parent.setCurrentlyChangingEgo (false);
 	}
 
 	public override void DeInit(EgoSystem parent) {
-
+		GameObject player = GameObject.FindGameObjectWithTag("Player");
+		CharacterMotor mtr = player.GetComponent<CharacterMotor>();
+		mtr.isBirdman = true;
 	}
 }
 
@@ -102,6 +107,10 @@ public class EgoSystem : MonoBehaviour {
 
 	public void setCurrentlyChangingEgo(bool changing) {
 		currentlyChangingEgo = changing;
+	}
+
+	public CharacterEgo GetCurrentEgo() {
+		return currentEgo;
 	}
 
 	public void setInsideDraft(bool inside) {
@@ -135,11 +144,11 @@ public class EgoSystem : MonoBehaviour {
 
 		standardEgo = new StandardEgo();
 		thiefEgo = new ThiefEgo();
-		birdmanEgo = new BirdmanEgo ();
+		birdmanEgo = new BirdmanEgo();
 		
 		currentEgo = standardEgo;
 	}
-	
+
 	// Update is called once per frame
 	void Update () {
 		if (!currentlyChangingEgo) {
@@ -150,6 +159,9 @@ public class EgoSystem : MonoBehaviour {
 			} else if (Input.GetKey ("2")) {
 				changeEgo = thiefEgo;
 				Debug.Log ("Pressing 2");
+			} else if (Input.GetKey ("3")) {
+				changeEgo = birdmanEgo;
+				Debug.Log ("Pressing 3");
 			}
 
 			if (changeEgo != null) {
