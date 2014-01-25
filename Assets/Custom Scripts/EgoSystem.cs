@@ -28,6 +28,10 @@ public class StandardEgo : CharacterEgo {
 public class ThiefEgo : CharacterEgo {
 
 	public override void Init(EgoSystem parent) {
+		GameObject player = GameObject.FindGameObjectWithTag("Player");
+		CharacterMotor mtr = player.GetComponent<CharacterMotor>();
+		mtr.isThief = true;
+
 		GameObject[] doors = GameObject.FindGameObjectsWithTag("LockedDoor");
 		foreach (GameObject door in doors) {
 			if (door.activeInHierarchy) {
@@ -59,6 +63,9 @@ public class ThiefEgo : CharacterEgo {
 	}
 
 	public override void DeInit(EgoSystem parent) {
+		GameObject player = GameObject.FindGameObjectWithTag("Player");
+		CharacterMotor mtr = player.GetComponent<CharacterMotor>();
+		mtr.isThief = false;
 		GameObject[] doors = GameObject.FindGameObjectsWithTag("LockedDoor");
 		foreach (GameObject door in doors) {
 			if (door.activeInHierarchy) {
@@ -123,6 +130,9 @@ public class BirdmanEgo : CharacterEgo {
 
 public class InventorEgo : CharacterEgo {
 	public override void Init(EgoSystem parent) {
+		GameObject player = GameObject.FindGameObjectWithTag("Player");
+		CharacterMotor mtr = player.GetComponent<CharacterMotor>();
+		mtr.isInventor = true;
 		GameObject[] debrises = GameObject.FindGameObjectsWithTag("Debris");
 		foreach (GameObject debris in debrises) {
 			foreach (Transform child in debris.transform) {
@@ -141,6 +151,9 @@ public class InventorEgo : CharacterEgo {
 	}
 
 	public override void DeInit(EgoSystem parent) {
+		GameObject player = GameObject.FindGameObjectWithTag("Player");
+		CharacterMotor mtr = player.GetComponent<CharacterMotor>();
+		mtr.isInventor = false;
 		GameObject[] debrises = GameObject.FindGameObjectsWithTag("Debris");
 		foreach (GameObject debris in debrises) {
 			foreach (Transform child in debris.transform) {
@@ -157,7 +170,12 @@ public class InventorEgo : CharacterEgo {
 	}
 }
 
+
+
 public class EgoSystem : MonoBehaviour {
+	public static int maxSwitches = 5;
+	public static int switchesLeft = maxSwitches;
+
 	bool currentlyChangingEgo;
 	CharacterEgo currentEgo;
 	CharacterEgo standardEgo;
@@ -174,7 +192,7 @@ public class EgoSystem : MonoBehaviour {
 	}
 
 	public void setCurrentEgo(CharacterEgo changeEgo) {
-		if (changeEgo == currentEgo) {
+		if (changeEgo == currentEgo || switchesLeft <= 0) {
 			return;
 		}
 
@@ -184,6 +202,7 @@ public class EgoSystem : MonoBehaviour {
 		changeEgo.Init (this);
 
 		currentEgo = changeEgo;
+		switchesLeft--;
 	}
 
 	// Use this for initialization
@@ -200,6 +219,20 @@ public class EgoSystem : MonoBehaviour {
 		inventorEgo.DeInit (this);
 		
 		currentEgo = standardEgo;
+	}
+
+	void Reset () {
+		switchesLeft = maxSwitches;
+		currentEgo.DeInit (this);
+		standardEgo.Init (this);
+		currentEgo = standardEgo;
+
+		GameObject spawnPoint = GameObject.FindGameObjectWithTag("Spawn");
+		GameObject player = GameObject.FindGameObjectWithTag("Player");
+		player.transform.position = spawnPoint.transform.position;
+		player.transform.rotation = spawnPoint.transform.rotation;
+		player.GetComponent<CharacterMotor> ().isDead = false;
+
 	}
 
 	// Update is called once per frame
@@ -235,5 +268,8 @@ public class EgoSystem : MonoBehaviour {
 				}
 			}
 		}
+		if (GameObject.FindGameObjectWithTag ("Player").GetComponent<CharacterMotor>().isDead)
+			Reset ();
+
 	}
 }

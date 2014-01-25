@@ -34,7 +34,7 @@ class CharacterMotorMovement {
 
 	// The gravity for the character
 	var gravity : float = 10.0;
-	var maxFallSpeed : float = 20.0;
+	var maxFallSpeed : float = 25.0;
 	
 	// For the next variables, @System.NonSerialized tells Unity to not serialize the variable or show it in the inspector view.
 	// Very handy for organization!
@@ -176,10 +176,28 @@ var maxDraft : float = 7.0;
 var currentDraftChange : float = 1.0;
 
 @System.NonSerialized
+var isDead : boolean = false;
+
+@System.NonSerialized
 var isBirdman : boolean = false;
 
 @System.NonSerialized
 var isStandard : boolean = true;
+
+@System.NonSerialized
+var isNinja : boolean = false;
+
+@System.NonSerialized
+var isThief : boolean = false;
+
+@System.NonSerialized
+var isInventor : boolean = false;
+
+@System.NonSerialized
+var isMiner : boolean = false;
+
+@System.NonSerialized
+var isElectrician : boolean = false;
 
 @System.NonSerialized
 var groundNormal : Vector3 = Vector3.zero;
@@ -403,7 +421,7 @@ private function ApplyInputVelocityChange (velocity : Vector3) {
 }
 private var canAirJump : boolean = true;
 private function ApplyGravityAndJumping (velocity : Vector3) {
-	Debug.Log(canAirJump+"WTF");
+	//Debug.Log(canAirJump+"WTF");
 	if (!inputJump || !canControl) {
 		jumping.holdingJumpButton = false;
 		jumping.lastButtonDownTime = -100;
@@ -506,7 +524,14 @@ function OnControllerColliderHit (hit : ControllerColliderHit) {
 
 	if (hit.normal.y > 0 && hit.normal.y > groundNormal.y && hit.moveDirection.y < 0) {
 		if ((hit.point - movement.lastHitPoint).sqrMagnitude > 0.001 || lastGroundNormal == Vector3.zero)
+		{
 			groundNormal = hit.normal;
+			var impulseVelocity : float = Vector3.Dot(groundNormal, movement.velocity);
+			if(isNinja && impulseVelocity < -7.0f)
+				isDead = true;
+			else if(!isNinja && impulseVelocity < -15.0f)
+				isDead = true;
+		}
 		else
 			groundNormal = lastGroundNormal;
 		
