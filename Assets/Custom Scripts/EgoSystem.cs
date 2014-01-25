@@ -98,8 +98,14 @@ public class EgoSystem : MonoBehaviour {
 	CharacterEgo thiefEgo;
 	CharacterEgo birdmanEgo;
 
+	bool insideDraft;
+
 	public void setCurrentlyChangingEgo(bool changing) {
 		currentlyChangingEgo = changing;
+	}
+
+	public void setInsideDraft(bool inside) {
+		insideDraft = inside;
 	}
 
 	public void setCurrentEgo(CharacterEgo changeEgo) {
@@ -125,13 +131,11 @@ public class EgoSystem : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		GameObject player = GameObject.FindGameObjectWithTag("Player");
-		//player.
-
 		currentlyChangingEgo = false;
 
 		standardEgo = new StandardEgo();
 		thiefEgo = new ThiefEgo();
+		birdmanEgo = new BirdmanEgo ();
 		
 		currentEgo = standardEgo;
 	}
@@ -153,11 +157,6 @@ public class EgoSystem : MonoBehaviour {
 				
 				setCurrentEgo (changeEgo);
 			}
-		}
-
-		if (currentEgo == birdmanEgo) {
-			GameObject player = GameObject.FindGameObjectWithTag("Player");
-			//player.gameObject.
 		}
 	}
 }
