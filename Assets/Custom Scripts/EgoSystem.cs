@@ -118,9 +118,9 @@ public class InventorEgo : CharacterEgo {
 				MeshRenderer jesus = child.GetComponent<MeshRenderer>();
 				if (jesus) {
 					if (child.tag.Equals("InnerDebris")) {
-						child.gameObject.active = false;
+						child.gameObject.SetActive (false);
 					} else if (child.tag.Equals("HiddenObject")) {
-						child.gameObject.active = true;
+						child.gameObject.SetActive (true);
 					}
 				}
 			}
@@ -136,9 +136,9 @@ public class InventorEgo : CharacterEgo {
 				MeshRenderer jesus = child.GetComponent<MeshRenderer>();
 				if (jesus) {
 					if (child.tag.Equals("InnerDebris")) {
-						child.active = true;
+						child.gameObject.SetActive (true);
 					} else if (child.tag.Equals("HiddenObject")) {
-						child.active = false;
+						child.gameObject.SetActive (false);
 					}
 				}
 			}
@@ -238,8 +238,12 @@ public class EgoSystem : MonoBehaviour {
 				// Debug.DrawRay (transform.position + Vector3.up * 0.5f, Camera.current.transform.forward * 200, Color.black);
 				Ray forwardRay = new Ray (transform.position + Vector3.up * 0.5f, Camera.current.transform.forward);
 				if (Physics.Raycast (forwardRay, out forwardLookHit, 2)) {
+					Collider collider = forwardLookHit.collider;
 					if (forwardLookHit.collider.tag == "HiddenObject") {
 						Debug.Log ("Colliding with hidden object!!");
+					} else if (collider.transform.root.gameObject.tag == "UnlockedDoor") {
+						Transform tmpRoot = collider.transform.root;
+						tmpRoot.gameObject.GetComponent<DoorState>().Toggle ();
 					}
 				}
 			}
