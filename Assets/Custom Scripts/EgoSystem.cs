@@ -110,14 +110,49 @@ public class BirdmanEgo : CharacterEgo {
 	}
 }
 
+public class InventorEgo : CharacterEgo {
+	public override void Init(EgoSystem parent) {
+		GameObject[] debrises = GameObject.FindGameObjectsWithTag("Debris");
+		foreach (GameObject debris in debrises) {
+			foreach (Transform child in debris.transform) {
+				MeshRenderer jesus = child.GetComponent<MeshRenderer>();
+				if (jesus) {
+					if (child.tag.Equals("InnerDebris")) {
+						child.active = false;
+					} else if (child.tag.Equals("HiddenObject")) {
+						child.active = true;
+					}
+				}
+			}
+		}
+
+		parent.setCurrentlyChangingEgo (false);
+	}
+
+	public override void DeInit(EgoSystem parent) {
+		GameObject[] debrises = GameObject.FindGameObjectsWithTag("Debris");
+		foreach (GameObject debris in debrises) {
+			foreach (Transform child in debris.transform) {
+				MeshRenderer jesus = child.GetComponent<MeshRenderer>();
+				if (jesus) {
+					if (child.tag.Equals("InnerDebris")) {
+						child.active = true;
+					} else if (child.tag.Equals("HiddenObject")) {
+						child.active = false;
+					}
+				}
+			}
+		}
+	}
+}
+
 public class EgoSystem : MonoBehaviour {
 	bool currentlyChangingEgo;
 	CharacterEgo currentEgo;
 	CharacterEgo standardEgo;
 	CharacterEgo thiefEgo;
 	CharacterEgo birdmanEgo;
-
-	bool insideDraft;
+	CharacterEgo inventorEgo;
 
 	public void setCurrentlyChangingEgo(bool changing) {
 		currentlyChangingEgo = changing;
@@ -127,29 +162,17 @@ public class EgoSystem : MonoBehaviour {
 		return currentEgo;
 	}
 
-	public void setInsideDraft(bool inside) {
-		insideDraft = inside;
-	}
-
 	public void setCurrentEgo(CharacterEgo changeEgo) {
-		Debug.Log ("In setCurrentEgo");
-
 		if (changeEgo == currentEgo) {
-			Debug.Log ("No ego change");
 			return;
 		}
 
 		setCurrentlyChangingEgo(true);
-
-		Debug.Log ("Deiniting current ego");
+		
 		currentEgo.DeInit (this);
-
-		Debug.Log ("Initing new ego");
 		changeEgo.Init (this);
 
 		currentEgo = changeEgo;
-
-		Debug.Log ("Done changing ego!");
 	}
 
 	// Use this for initialization
@@ -159,31 +182,46 @@ public class EgoSystem : MonoBehaviour {
 		standardEgo = new StandardEgo();
 		thiefEgo = new ThiefEgo();
 		birdmanEgo = new BirdmanEgo();
+		inventorEgo = new InventorEgo ();
 
 		birdmanEgo.DeInit (this);
+		inventorEgo.DeInit (this);
 		
 		currentEgo = standardEgo;
 	}
 
 	// Update is called once per frame
 	void Update () {
+		// Handle ego-changing button presses
 		if (!currentlyChangingEgo) {
 			CharacterEgo changeEgo = null;
 			if (Input.GetKey ("1")) {
 				changeEgo = standardEgo;
-				Debug.Log ("Pressing 1");
 			} else if (Input.GetKey ("2")) {
 				changeEgo = thiefEgo;
-				Debug.Log ("Pressing 2");
 			} else if (Input.GetKey ("3")) {
 				changeEgo = birdmanEgo;
-				Debug.Log ("Pressing 3");
+			} else if (Input.GetKey ("4")) {
+				changeEgo = inventorEgo;
 			}
 
 			if (changeEgo != null) {
-				Debug.Log ("Calling setCurrentEgo");
 				
 				setCurrentEgo (changeEgo);
+			}
+		}
+
+		if (Input.GetKey ("e")) {
+			RaycastHit forwardLookHit;
+			if (Camera.current) {
+				Debug.DrawRay (transform.position, Camera.current.transform.forward * 200, Color.black);
+				Ray forwardRay = new Ray (transform.position, Camera.current.transform.forward);
+				if (Physics.Raycast (forwardRay, out forwardLookHit, 2)) {
+					Debug.Log (forwardLookHit.collider.tag);
+					if (forwardLookHit.collider.tag == "HiddenObject") {
+						Debug.Log ("Colliding with hidden object!!");
+					}
+				}
 			}
 		}
 	}
