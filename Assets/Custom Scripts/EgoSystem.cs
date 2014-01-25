@@ -213,10 +213,9 @@ public class EgoSystem : MonoBehaviour {
 		if (Input.GetKey ("e")) {
 			RaycastHit forwardLookHit;
 			if (Camera.current) {
-				Debug.DrawRay (transform.position, Camera.current.transform.forward * 200, Color.black);
-				Ray forwardRay = new Ray (transform.position, Camera.current.transform.forward);
+				// Debug.DrawRay (transform.position + Vector3.up * 0.5f, Camera.current.transform.forward * 200, Color.black);
+				Ray forwardRay = new Ray (transform.position + Vector3.up * 0.5f, Camera.current.transform.forward);
 				if (Physics.Raycast (forwardRay, out forwardLookHit, 2)) {
-					Debug.Log (forwardLookHit.collider.tag);
 					if (forwardLookHit.collider.tag == "HiddenObject") {
 						Debug.Log ("Colliding with hidden object!!");
 					}
