@@ -419,9 +419,8 @@ private function ApplyInputVelocityChange (velocity : Vector3) {
 	
 	return velocity;
 }
-private var canAirJump : boolean = true;
+private var canAirJump : boolean = false;
 private function ApplyGravityAndJumping (velocity : Vector3) {
-	//Debug.Log(canAirJump+"WTF");
 	if (!inputJump || !canControl) {
 		jumping.holdingJumpButton = false;
 		jumping.lastButtonDownTime = -100;
@@ -454,9 +453,9 @@ private function ApplyGravityAndJumping (velocity : Vector3) {
 		velocity.y = Mathf.Max (velocity.y, -movement.maxFallSpeed);
 	}
 
-	if (grounded && isStandard) {
-		canAirJump = true;
-	}
+	//if (grounded && isStandard) {
+	//	canAirJump = true;
+	//}
 	if (grounded || (inDraft && isBirdman)) {
 		// Jump only if the jump button was pressed down in the last 0.2 seconds.
 		// We use this check instead of checking if it's pressed down right now
