@@ -9,11 +9,19 @@ public abstract class CharacterEgo {
 public class StandardEgo : CharacterEgo {
 	public override void Init(EgoSystem parent) {
 		parent.setCurrentlyChangingEgo (false);
+		GameObject player = GameObject.FindGameObjectWithTag("Player");
+		CharacterMotor mtr = player.GetComponent<CharacterMotor>();
+		mtr.isStandard = true;
+
 	}
 	
 	public override void DeInit(EgoSystem parent) {
 		 // do nothing. do NOT setCurrentlyChangingEgo(false).
 		// That would mean that you can switch to a new ego before the current ego finishes computing 
+		GameObject player = GameObject.FindGameObjectWithTag("Player");
+		CharacterMotor mtr = player.GetComponent<CharacterMotor>();
+		mtr.isStandard = false;
+
 	}
 }
 
@@ -84,6 +92,8 @@ public class BirdmanEgo : CharacterEgo {
 	public override void Init(EgoSystem parent) {
 		GameObject player = GameObject.FindGameObjectWithTag("Player");
 		CharacterMotor mtr = player.GetComponent<CharacterMotor>();
+		mtr.jumping.baseHeight = 0.5f;
+		mtr.jumping.extraHeight = 0.5f;
 		mtr.isBirdman = true;
 
 		GameObject[] drafts = GameObject.FindGameObjectsWithTag("Draft");
@@ -97,6 +107,8 @@ public class BirdmanEgo : CharacterEgo {
 	public override void DeInit(EgoSystem parent) {
 		GameObject player = GameObject.FindGameObjectWithTag("Player");
 		CharacterMotor mtr = player.GetComponent<CharacterMotor>();
+		mtr.jumping.baseHeight = 1.0f;
+		mtr.jumping.extraHeight = 1.0f;
 		mtr.isBirdman = false;
 
 		GameObject[] drafts = GameObject.FindGameObjectsWithTag("Draft");
@@ -183,6 +195,7 @@ public class EgoSystem : MonoBehaviour {
 		birdmanEgo = new BirdmanEgo();
 		inventorEgo = new InventorEgo ();
 
+		//thiefEgo.DeInit (this);
 		birdmanEgo.DeInit (this);
 		inventorEgo.DeInit (this);
 		

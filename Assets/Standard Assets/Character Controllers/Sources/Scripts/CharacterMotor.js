@@ -179,6 +179,9 @@ var currentDraftChange : float = 1.0;
 var isBirdman : boolean = false;
 
 @System.NonSerialized
+var isStandard : boolean = true;
+
+@System.NonSerialized
 var groundNormal : Vector3 = Vector3.zero;
 
 private var lastGroundNormal : Vector3 = Vector3.zero;
@@ -400,14 +403,18 @@ private function ApplyInputVelocityChange (velocity : Vector3) {
 }
 private var canAirJump : boolean = true;
 private function ApplyGravityAndJumping (velocity : Vector3) {
-	
+	Debug.Log(canAirJump+"WTF");
 	if (!inputJump || !canControl) {
 		jumping.holdingJumpButton = false;
 		jumping.lastButtonDownTime = -100;
 	}
 	
-	if (inputJump && jumping.lastButtonDownTime < 0 && canControl)
+	if (inputJump && jumping.lastButtonDownTime < 0 && canControl) {
 		jumping.lastButtonDownTime = Time.time;
+		if(grounded) {
+			canAirJump = isStandard;
+		}
+	}
 	
 	if (grounded || (inDraft && isBirdman))
 		velocity.y = Mathf.Min(0, velocity.y) - movement.gravity * Time.deltaTime;
@@ -429,9 +436,9 @@ private function ApplyGravityAndJumping (velocity : Vector3) {
 		velocity.y = Mathf.Max (velocity.y, -movement.maxFallSpeed);
 	}
 
-	if (grounded) {
+	if (grounded && isStandard) {
 		canAirJump = true;
-		}
+	}
 	if (grounded || (inDraft && isBirdman)) {
 		// Jump only if the jump button was pressed down in the last 0.2 seconds.
 		// We use this check instead of checking if it's pressed down right now
