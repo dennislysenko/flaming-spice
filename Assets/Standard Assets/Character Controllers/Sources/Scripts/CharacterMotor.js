@@ -170,6 +170,12 @@ var grounded : boolean = true;
 var inDraft : boolean = false;
 
 @System.NonSerialized
+var maxDraft : float = 7.0;
+
+@System.NonSerialized
+var currentDraftChange : float = 1.0;
+
+@System.NonSerialized
 var isBirdman : boolean = false;
 
 @System.NonSerialized
@@ -478,8 +484,13 @@ private function ApplyGravityAndJumping (velocity : Vector3) {
 	}
 	if(inDraft && isBirdman) {
 		Debug.Log(inDraft+", "+isBirdman);
-		velocity.y = 2;
+		if(currentDraftChange < maxDraft){
+			currentDraftChange+=.1;
+		}
+		velocity.y = currentDraftChange;
 	}
+	else
+		currentDraftChange = 1;
 	
 	return velocity;
 }
