@@ -12,7 +12,8 @@ public class StandardEgo : CharacterEgo {
 	}
 	
 	public override void DeInit(EgoSystem parent) {
-		 // do nothing. do NOT setCurrentlyChangingEgo(false).
+		// do nothing.
+		// IMPORTANT: do NOT setCurrentlyChangingEgo(false).
 		// That would mean that you can switch to a new ego before the current ego finishes computing 
 	}
 }
@@ -199,10 +200,11 @@ public class EgoSystem : MonoBehaviour {
 		inventorEgo = new InventorEgo ();
 		minerEgo = new MinerEgo ();
 
+		// Standard Ego should NOT deinit
 		// Thief Ego should NOT deinit
 		birdmanEgo.DeInit (this);
 		inventorEgo.DeInit (this);
-		minerEgo.DeInit (this);
+		// Miner Ego should NOT deinit
 		
 		currentEgo = standardEgo;
 	}
