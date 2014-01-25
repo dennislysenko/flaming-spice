@@ -494,6 +494,7 @@ private function ApplyGravityAndJumping (velocity : Vector3) {
 	
 	return velocity;
 }
+}
 
 function OnControllerColliderHit (hit : ControllerColliderHit) {
 
