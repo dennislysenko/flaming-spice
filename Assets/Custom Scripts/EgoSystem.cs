@@ -92,7 +92,7 @@ public class BirdmanEgo : CharacterEgo {
 	public override void DeInit(EgoSystem parent) {
 		GameObject player = GameObject.FindGameObjectWithTag("Player");
 		CharacterMotor mtr = player.GetComponent<CharacterMotor>();
-		mtr.isBirdman = true;
+		mtr.isBirdman = false;
 	}
 }
 

@@ -214,6 +214,7 @@ private function UpdateFunction () {
 	        tr.Rotate(0, yRotation, 0);
         }
 	}
+//}
 	
 	// Save lastPosition for velocity calculation.
 	var lastPosition : Vector3 = tr.position;
@@ -343,7 +344,7 @@ function Update () {
 }
 
 private function ApplyInputVelocityChange (velocity : Vector3) {	
-	if (!canControl)
+	if (!canControl && !(inDraft && isBirdman))
 		inputMoveDirection = Vector3.zero;
 	
 	// Find desired velocity
@@ -460,11 +461,16 @@ private function ApplyGravityAndJumping (velocity : Vector3) {
 			jumping.holdingJumpButton = false;
 		}
 	}
+	if(inDraft && isBirdman) {
+		Debug.Log(inDraft+", "+isBirdman);
+		velocity.y = 2;
+	}
 	
 	return velocity;
 }
 
 function OnControllerColliderHit (hit : ControllerColliderHit) {
+
 	if (hit.normal.y > 0 && hit.normal.y > groundNormal.y && hit.moveDirection.y < 0) {
 		if ((hit.point - movement.lastHitPoint).sqrMagnitude > 0.001 || lastGroundNormal == Vector3.zero)
 			groundNormal = hit.normal;
@@ -474,6 +480,7 @@ function OnControllerColliderHit (hit : ControllerColliderHit) {
 		movingPlatform.hitPlatform = hit.collider.transform;
 		movement.hitPoint = hit.point;
 		movement.frameVelocity = Vector3.zero;
+		
 	}
 }
 
