@@ -1,10 +1,9 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Custom Scripts\EgoSystem.cs">
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="MonoDevelop.Default" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\EnemyAI.js">
     <Files>
-      <File FileName="Assets\Standard Assets\Character Controllers\Sources\Scripts\CharacterMotor.js" Line="465" Column="37" />
-      <File FileName="Assets\Custom Scripts\EgoSystem.cs" Line="175" Column="1" />
-      <File FileName="Assets\Standard Assets\Character Controllers\Sources\Scripts\FPSInputController.js" Line="23" Column="45" />
+      <File FileName="Assets\EnemyAI.js" Line="13" Column="32" />
+      <File FileName="Assets\EnemySight.js" Line="15" Column="1" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
