@@ -12,7 +12,8 @@ public class StandardEgo : CharacterEgo {
 	}
 	
 	public override void DeInit(EgoSystem parent) {
-		 // do nothing. do NOT setCurrentlyChangingEgo(false).
+		// do nothing.
+		// IMPORTANT: do NOT setCurrentlyChangingEgo(false).
 		// That would mean that you can switch to a new ego before the current ego finishes computing 
 	}
 }
@@ -41,7 +42,6 @@ public class ThiefEgo : CharacterEgo {
 				}
 
 				if (!(doorRotateyPart == null || leftHinge == null)) {
-					Debug.Log ("Rotating door!");
 					doorRotateyPart.RotateAround (leftHinge.position, leftHinge.up, 90);
 				}
 			}
@@ -72,7 +72,6 @@ public class ThiefEgo : CharacterEgo {
 				}
 				
 				if (!(doorRotateyPart == null || leftHinge == null)) {
-					Debug.Log ("Rotating door!");
 					doorRotateyPart.RotateAround (leftHinge.position, leftHinge.up, -90);
 				}
 			}
@@ -117,12 +116,22 @@ public class InventorEgo : CharacterEgo {
 				MeshRenderer jesus = child.GetComponent<MeshRenderer>();
 				if (jesus) {
 					if (child.tag.Equals("InnerDebris")) {
-						child.active = false;
+						child.gameObject.SetActive (false);
 					} else if (child.tag.Equals("HiddenObject")) {
-						child.active = true;
+						child.gameObject.SetActive (true);
 					}
 				}
 			}
+		}
+
+		GameObject player = GameObject.FindGameObjectWithTag("Player");
+		CharacterMotor mtr = player.GetComponent<CharacterMotor> ();
+		if (mtr != null && mtr.movement != null) {
+			float newSpeed = 3.5f;
+
+			mtr.movement.maxForwardSpeed = newSpeed;
+			mtr.movement.maxSidewaysSpeed = newSpeed;
+			mtr.movement.maxBackwardsSpeed = newSpeed;
 		}
 
 		parent.setCurrentlyChangingEgo (false);
@@ -135,13 +144,37 @@ public class InventorEgo : CharacterEgo {
 				MeshRenderer jesus = child.GetComponent<MeshRenderer>();
 				if (jesus) {
 					if (child.tag.Equals("InnerDebris")) {
-						child.active = true;
+						child.gameObject.SetActive (true);
 					} else if (child.tag.Equals("HiddenObject")) {
-						child.active = false;
+						child.gameObject.SetActive (false);
 					}
 				}
 			}
 		}
+
+		GameObject player = GameObject.FindGameObjectWithTag("Player");
+		CharacterMotor mtr = player.GetComponent<CharacterMotor> ();
+		if (mtr != null && mtr.movement != null) {
+			float newSpeed = 6.0f;
+			
+			mtr.movement.maxForwardSpeed = newSpeed;
+			mtr.movement.maxSidewaysSpeed = newSpeed;
+			mtr.movement.maxBackwardsSpeed = newSpeed;
+		}
+	}
+}
+
+public class MinerEgo : CharacterEgo {
+	public override void Init(EgoSystem parent) {
+		//GameObject player = GameObject.FindGameObjectWithTag("Player");
+		GameObject.FindWithTag ("MinerLight").gameObject.light.intensity = 0.2f;
+
+		parent.setCurrentlyChangingEgo (false);
+	}
+
+	public override void DeInit(EgoSystem parent) {
+		//GameObject player = GameObject.FindGameObjectWithTag("Player");
+		GameObject.FindWithTag ("MinerLight").gameObject.light.intensity = 0;
 	}
 }
 
@@ -152,6 +185,7 @@ public class EgoSystem : MonoBehaviour {
 	CharacterEgo thiefEgo;
 	CharacterEgo birdmanEgo;
 	CharacterEgo inventorEgo;
+	CharacterEgo minerEgo;
 
 	public void setCurrentlyChangingEgo(bool changing) {
 		currentlyChangingEgo = changing;
@@ -182,9 +216,13 @@ public class EgoSystem : MonoBehaviour {
 		thiefEgo = new ThiefEgo();
 		birdmanEgo = new BirdmanEgo();
 		inventorEgo = new InventorEgo ();
+		minerEgo = new MinerEgo ();
 
+		// Standard Ego should NOT deinit
+		// Thief Ego should NOT deinit
 		birdmanEgo.DeInit (this);
 		inventorEgo.DeInit (this);
+		// Miner Ego should NOT deinit
 		
 		currentEgo = standardEgo;
 	}
@@ -202,6 +240,8 @@ public class EgoSystem : MonoBehaviour {
 				changeEgo = birdmanEgo;
 			} else if (Input.GetKey ("4")) {
 				changeEgo = inventorEgo;
+			} else if (Input.GetKey ("5")) {
+				changeEgo = minerEgo;
 			}
 
 			if (changeEgo != null) {
@@ -216,8 +256,12 @@ public class EgoSystem : MonoBehaviour {
 				// Debug.DrawRay (transform.position + Vector3.up * 0.5f, Camera.current.transform.forward * 200, Color.black);
 				Ray forwardRay = new Ray (transform.position + Vector3.up * 0.5f, Camera.current.transform.forward);
 				if (Physics.Raycast (forwardRay, out forwardLookHit, 2)) {
+					Collider collider = forwardLookHit.collider;
 					if (forwardLookHit.collider.tag == "HiddenObject") {
 						Debug.Log ("Colliding with hidden object!!");
+					} else if (collider.transform.root.gameObject.tag == "UnlockedDoor") {
+						Transform tmpRoot = collider.transform.root;
+						tmpRoot.gameObject.GetComponent<DoorState>().Toggle ();
 					}
 				}
 			}
