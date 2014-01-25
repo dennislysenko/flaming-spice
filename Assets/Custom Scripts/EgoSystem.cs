@@ -117,9 +117,9 @@ public class InventorEgo : CharacterEgo {
 				MeshRenderer jesus = child.GetComponent<MeshRenderer>();
 				if (jesus) {
 					if (child.tag.Equals("InnerDebris")) {
-						child.active = false;
+						child.gameObject.active = false;
 					} else if (child.tag.Equals("HiddenObject")) {
-						child.active = true;
+						child.gameObject.active = true;
 					}
 				}
 			}
@@ -145,6 +145,20 @@ public class InventorEgo : CharacterEgo {
 	}
 }
 
+public class MinerEgo : CharacterEgo {
+	public override void Init(EgoSystem parent) {
+		//GameObject player = GameObject.FindGameObjectWithTag("Player");
+		GameObject.FindWithTag ("MinerLight").gameObject.light.intensity = 0.2f;
+
+		parent.setCurrentlyChangingEgo (false);
+	}
+
+	public override void DeInit(EgoSystem parent) {
+		//GameObject player = GameObject.FindGameObjectWithTag("Player");
+		GameObject.FindWithTag ("MinerLight").gameObject.light.intensity = 0;
+	}
+}
+
 public class EgoSystem : MonoBehaviour {
 	bool currentlyChangingEgo;
 	CharacterEgo currentEgo;
@@ -152,6 +166,7 @@ public class EgoSystem : MonoBehaviour {
 	CharacterEgo thiefEgo;
 	CharacterEgo birdmanEgo;
 	CharacterEgo inventorEgo;
+	CharacterEgo minerEgo;
 
 	public void setCurrentlyChangingEgo(bool changing) {
 		currentlyChangingEgo = changing;
@@ -182,9 +197,12 @@ public class EgoSystem : MonoBehaviour {
 		thiefEgo = new ThiefEgo();
 		birdmanEgo = new BirdmanEgo();
 		inventorEgo = new InventorEgo ();
+		minerEgo = new MinerEgo ();
 
+		// Thief Ego should NOT deinit
 		birdmanEgo.DeInit (this);
 		inventorEgo.DeInit (this);
+		minerEgo.DeInit (this);
 		
 		currentEgo = standardEgo;
 	}
@@ -202,6 +220,8 @@ public class EgoSystem : MonoBehaviour {
 				changeEgo = birdmanEgo;
 			} else if (Input.GetKey ("4")) {
 				changeEgo = inventorEgo;
+			} else if (Input.GetKey ("5")) {
+				changeEgo = minerEgo;
 			}
 
 			if (changeEgo != null) {
