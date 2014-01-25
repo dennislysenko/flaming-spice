@@ -1,9 +1,11 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="MonoDevelop.Default" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\EnemyAI.js">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\EnemySight.js">
     <Files>
-      <File FileName="Assets\EnemyAI.js" Line="13" Column="32" />
-      <File FileName="Assets\EnemySight.js" Line="15" Column="1" />
+      <File FileName="Assets\EnemyAI.js" Line="56" Column="1" />
+      <File FileName="Assets\EnemySight.js" Line="95" Column="49" />
+      <File FileName="Assets\LastPlayerSighting.js" Line="49" Column="6" />
+      <File FileName="Assets\Tags.js" Line="9" Column="52" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

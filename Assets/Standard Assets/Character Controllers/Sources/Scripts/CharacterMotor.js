@@ -170,6 +170,12 @@ var grounded : boolean = true;
 var inDraft : boolean = false;
 
 @System.NonSerialized
+var maxDraft : float = 7.0;
+
+@System.NonSerialized
+var currentDraftChange : float = 1.0;
+
+@System.NonSerialized
 var isBirdman : boolean = false;
 
 @System.NonSerialized
@@ -425,6 +431,7 @@ private function ApplyGravityAndJumping (velocity : Vector3) {
 
 	if (grounded) {
 		canAirJump = true;
+		}
 	if (grounded || (inDraft && isBirdman)) {
 		// Jump only if the jump button was pressed down in the last 0.2 seconds.
 		// We use this check instead of checking if it's pressed down right now
@@ -477,11 +484,15 @@ private function ApplyGravityAndJumping (velocity : Vector3) {
 	}
 	if(inDraft && isBirdman) {
 		Debug.Log(inDraft+", "+isBirdman);
-		velocity.y = 2;
+		if(currentDraftChange < maxDraft){
+			currentDraftChange+=.1;
+		}
+		velocity.y = currentDraftChange;
 	}
+	else
+		currentDraftChange = 1;
 	
 	return velocity;
-}
 }
 
 function OnControllerColliderHit (hit : ControllerColliderHit) {
