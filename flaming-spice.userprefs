@@ -1,4 +1,5 @@
 ﻿<Properties>
+<<<<<<< HEAD
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="MonoDevelop.Default" />
   <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Custom Scripts\TutorialCube.js">
     <Files>
@@ -7,6 +8,13 @@
       <File FileName="Assets\Custom Scripts\Thief1Cube.js" Line="12" Column="36" />
       <File FileName="Assets\Custom Scripts\TutorialCube.js" Line="6" Column="110" />
       <File FileName="Assets\Custom Scripts\LightFollowPlayer.cs" Line="9" Column="38" />
+=======
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Standard Assets\Character Controllers\Sources\Scripts\CharacterMotor.js">
+    <Files>
+      <File FileName="Assets\Custom Scripts\EgoSystem.cs" Line="177" Column="3" />
+      <File FileName="Assets\Standard Assets\Character Controllers\Sources\Scripts\CharacterMotor.js" Line="420" Column="8" />
+>>>>>>> 3240939061515e8fa92412ecf33dc1253f2f3ae4
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
