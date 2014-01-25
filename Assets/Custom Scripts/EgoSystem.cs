@@ -86,6 +86,11 @@ public class BirdmanEgo : CharacterEgo {
 		CharacterMotor mtr = player.GetComponent<CharacterMotor>();
 		mtr.isBirdman = true;
 
+		GameObject[] drafts = GameObject.FindGameObjectsWithTag("Draft");
+		foreach (GameObject draft in drafts) {
+			draft.GetComponent<MeshRenderer>().enabled = true;
+		}
+
 		parent.setCurrentlyChangingEgo (false);
 	}
 
@@ -93,6 +98,14 @@ public class BirdmanEgo : CharacterEgo {
 		GameObject player = GameObject.FindGameObjectWithTag("Player");
 		CharacterMotor mtr = player.GetComponent<CharacterMotor>();
 		mtr.isBirdman = false;
+
+		GameObject[] drafts = GameObject.FindGameObjectsWithTag("Draft");
+		foreach (GameObject draft in drafts) {
+			MeshRenderer jesus = draft.GetComponent<MeshRenderer>();
+			if (jesus) {
+				jesus.enabled = false;
+			}
+		}
 	}
 }
 
@@ -145,6 +158,9 @@ public class EgoSystem : MonoBehaviour {
 		standardEgo = new StandardEgo();
 		thiefEgo = new ThiefEgo();
 		birdmanEgo = new BirdmanEgo();
+
+		thiefEgo.DeInit (this);
+		birdmanEgo.DeInit (this);
 		
 		currentEgo = standardEgo;
 	}
