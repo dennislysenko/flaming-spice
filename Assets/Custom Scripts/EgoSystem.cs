@@ -99,7 +99,6 @@ public class EgoSystem : MonoBehaviour {
 	CharacterEgo birdmanEgo;
 
 	public void setCurrentlyChangingEgo(bool changing) {
-		//yield return new WaitForSeconds (2.0f); // Delay execution a tiny bit to prevent ego change spamming
 		currentlyChangingEgo = changing;
 	}
 
@@ -126,6 +125,9 @@ public class EgoSystem : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
+		GameObject player = GameObject.FindGameObjectWithTag("Player");
+		//player.
+
 		currentlyChangingEgo = false;
 
 		standardEgo = new StandardEgo();
@@ -154,7 +156,8 @@ public class EgoSystem : MonoBehaviour {
 		}
 
 		if (currentEgo == birdmanEgo) {
-
+			GameObject player = GameObject.FindGameObjectWithTag("Player");
+			//player.gameObject.
 		}
 	}
 }
