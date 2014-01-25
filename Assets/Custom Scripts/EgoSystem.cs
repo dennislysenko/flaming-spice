@@ -160,7 +160,6 @@ public class EgoSystem : MonoBehaviour {
 		thiefEgo = new ThiefEgo();
 		birdmanEgo = new BirdmanEgo();
 
-		thiefEgo.DeInit (this);
 		birdmanEgo.DeInit (this);
 		
 		currentEgo = standardEgo;
