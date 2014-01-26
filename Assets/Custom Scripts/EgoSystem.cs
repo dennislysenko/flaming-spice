@@ -398,6 +398,7 @@ public class EgoSystem : MonoBehaviour {
 		//electrician = (Texture2D)Resources.Load ("Images/Electrician.png");
 
 	}
+
 	public static void interactWithGuard(bool withinKillRange) {
 		if(!shouldDieFromGuard)
 			shouldDieFromGuard = (withinKillRange || GameObject.FindGameObjectWithTag("Player").GetComponent<CharacterMotor>().isThief);
@@ -408,6 +409,7 @@ public class EgoSystem : MonoBehaviour {
 		currentEgo.DeInit (this);
 		standardEgo.Init (this);
 		currentEgo = standardEgo;
+		egoDisplay.texture = standard;
 
 		hasZipline = false;
 		hasSuperShoes = false;
@@ -421,7 +423,6 @@ public class EgoSystem : MonoBehaviour {
 		player.transform.rotation = spawnPoint.transform.rotation;
 		player.GetComponent<CharacterMotor> ().isDead = false;
 		switchesLeftText.text = "Ego Switches Left: " + switchesLeft;
-
 	}
 
 	// Update is called once per frame
@@ -548,7 +549,9 @@ public class EgoSystem : MonoBehaviour {
 				timeSinceLastAction = 0;
 			}
 		}
-		if (GameObject.FindGameObjectWithTag ("Player").GetComponent<CharacterMotor>().isDead)
+
+
+		if (GameObject.FindGameObjectWithTag ("Player").GetComponent<CharacterMotor>().isDead || (Input.GetKey ("r") && timeSinceLastAction >= 0.3f))
 			Reset ();
 		//Debug.Log (shouldDieFromGuard + "");
 		if (shouldDieFromGuard) {
