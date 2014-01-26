@@ -3,8 +3,8 @@ using System.Collections;
 
 public class PersitentLevelManager : MonoBehaviour {
 
-	private static string[] listOfLevels = new string[2];
-	private static bool[] levelCompletion = new bool[2];
+	private static string[] listOfLevels = new string[3];
+	private static bool[] levelCompletion = new bool[3];
 	private static int mapsCompleted = 0;
 
 	private static bool thiefUnlocked = false;
@@ -17,6 +17,8 @@ public class PersitentLevelManager : MonoBehaviour {
 			levelCompletion [0] = false;
 			listOfLevels [1] = "map_thief1";
 			levelCompletion [1] = false;
+			listOfLevels [2] = "map_thief2";
+			levelCompletion [2] = false;
 		}
 	}
 	
