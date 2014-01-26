@@ -9,6 +9,7 @@ public class LightCPBehaviour : MonoBehaviour {
 
 	public void DisableLights() {
 		lightsEnabled = false;
+		if(guardsLinked.Length > 0)
 		foreach (GameObject guard in guardsLinked) {
 			guard.GetComponent<GuardScript>().inLight = false;
 		}

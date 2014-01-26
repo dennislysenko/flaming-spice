@@ -23,13 +23,13 @@ public class LevelCube : MonoBehaviour {
 	void OnTriggerEnter (Collider col) {
 		if (col.gameObject.name == "Alterego Player") {
 			inCube = true;
-			if (PersitentLevelManager.IsLevelCompleted(level)) {
+			if (PersistentLevelManager.IsLevelCompleted(level)) {
 				textManager.guiText.text = "Level already completed. Press E to enter the level...";
 			}
 			else {
 				textManager.guiText.text = "Press E to enter the level...";
 			}
-			if (PersitentLevelManager.IsNextLevel(level)) {
+			if (PersistentLevelManager.IsNextLevel(level)) {
 				enterable = true;
 			}
 			else {

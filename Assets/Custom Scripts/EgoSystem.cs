@@ -395,10 +395,10 @@ public class EgoSystem : MonoBehaviour {
 
 		switchesLeftText.text = "Ego Switches Left: " + switchesLeft;
 
-		int mapsCompleted = PersitentLevelManager.GetMapsCompleted ();
+		int mapsCompleted = PersistentLevelManager.GetMapsCompleted ();
 		maxEgo = 10;
 			if (mapsCompleted >= 0)
-				if (PersitentLevelManager.thiefIsUnlocked ())
+				if (PersistentLevelManager.thiefIsUnlocked ())
 						maxEgo = 2;
 
 		//standard = (Texture2D)Resources.Load ("Images/Standard.png");
@@ -413,10 +413,12 @@ public class EgoSystem : MonoBehaviour {
 	
 	bool dying = false;
 	Vector3 placeOfDeath;
-	public void Reset() {
+	public void Reset(string deathText="") {
 		if (dying) {
 			return;
 		}
+
+		GameObject.FindGameObjectWithTag ("TextManager").guiText.text = deathText;
 		dying = true;
 		placeOfDeath = transform.position;
 		StartCoroutine (ResetHelper ());
@@ -459,6 +461,8 @@ public class EgoSystem : MonoBehaviour {
 		}
 
 		dying = false;
+
+		GameObject.FindGameObjectWithTag ("TextManager").guiText.text = "";
 
 		switchesLeftText.text = "Ego Switches Left: " + switchesLeft;
 	}
@@ -553,7 +557,6 @@ public class EgoSystem : MonoBehaviour {
 					if (Physics.Raycast (forwardRay, out forwardLookHit, 3)) {
 						Collider collider = forwardLookHit.collider;
 						Debug.Log (collider.name);
-						print (collider.tag);
 						if (collider.tag == "HiddenObject") {
 							switch(forwardLookHit.collider.name) {
 								case "ZiplineDebris":
@@ -591,7 +594,6 @@ public class EgoSystem : MonoBehaviour {
 							collider.GetComponent<LaserCPBehaviour> ().DisableLasers ();
 						} else if (collider.tag == "LightCP" && currentEgo == electricianEgo) {
 							collider.GetComponent<LightCPBehaviour>().DisableLights();
-							print ("lights");
 						}
 					} else if(hasTrap) { 
 						Instantiate (trapPrefab,
