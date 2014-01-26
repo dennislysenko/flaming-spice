@@ -9,6 +9,9 @@ function Start () {
 }
 
 function Update () {
+	if (inCube) {
+		textManager.guiText.text = msg;
+	}
 }
 
 function OnTriggerEnter (col : Collider) {
