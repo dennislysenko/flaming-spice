@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections;
+using System.Threading;
 
 public abstract class CharacterEgo {
 	public abstract void Init(EgoSystem parent);
@@ -393,7 +394,7 @@ public class EgoSystem : MonoBehaviour {
 			}
 		}
 
-		if (Input.GetKey ("e") && timeSinceLastDoorChange >= 0.3f) {
+		if (Input.GetKey ("e")) {
 			RaycastHit forwardLookHit;
 			if (Camera.current) {
 				// Debug.DrawRay (transform.position + Vector3.up * 0.5f, Camera.current.transform.forward * 200, Color.black);
@@ -402,7 +403,7 @@ public class EgoSystem : MonoBehaviour {
 					Collider collider = forwardLookHit.collider;
 					if (forwardLookHit.collider.tag == "HiddenObject") {
 						Debug.Log ("Colliding with hidden object!!");
-					} else if (collider.transform.root.gameObject.tag == "UnlockedDoor") {
+					} else if (collider.transform.root.gameObject.tag == "UnlockedDoor" && timeSinceLastDoorChange >= 0.3f) {
 						Transform tmpRoot = collider.transform.root;
 						tmpRoot.gameObject.GetComponent<DoorState>().Toggle ();
 						timeSinceLastDoorChange = 0;

@@ -1,13 +1,43 @@
+<<<<<<< HEAD
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="MonoDevelop.Default" />
   <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Custom Scripts\EgoSystem.cs">
     <Files>
       <File FileName="Assets\Custom Scripts\EgoSystem.cs" Line="410" Column="45" />
       <File FileName="Assets\Custom Scripts\LaserCPBehaviour.cs" Line="10" Column="4" />
+=======
+<<<<<<< HEAD
+﻿<Properties>
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Custom Scripts\ChangeIcon.js">
+    <Files>
+      <File FileName="Assets\Custom Scripts\MinerTrigger.cs" Line="14" Column="8" />
+      <File FileName="Assets\Custom Scripts\EgoSystem.cs" Line="385" Column="1" />
+      <File FileName="Assets\Standard Assets\Character Controllers\Sources\Scripts\CharacterMotor.js" Line="424" Column="1" />
+      <File FileName="Assets\Custom Scripts\ChangeIcon.js" Line="35" Column="9" />
+>>>>>>> 0dad50492bdd14512ef3cc5ae2f94575287a59fc
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
     <BreakpointStore />
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+<<<<<<< HEAD
+=======
+=======
+﻿<Properties>
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Custom Scripts\EnemyChase.js">
+    <Files>
+      <File FileName="Assets\Custom Scripts\EnemyChase.js" Line="14" Column="20" />
+      <File FileName="Assets\Custom Scripts\EnemySight.js" Line="19" Column="107" />
+      <File FileName="Assets\Custom Scripts\EnemyAI.js" Line="53" Column="19" />
+    </Files>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+>>>>>>> 10f84b7fac27ac4332894d5e391d9dea225c3ff3
+>>>>>>> 0dad50492bdd14512ef3cc5ae2f94575287a59fc
 </Properties>
