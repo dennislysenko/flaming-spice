@@ -15,7 +15,7 @@ public class GuardScript : MonoBehaviour {
 	public Transform[] waypoints;
 	int wayPointToWalkTo = 0;
 	float wayPointTolerance = 2.0f;
-	float instakillRadius = 2.0f;
+	float instakillRadius = 1.5f;
 	// Use this for initialization
 	void Start () {
 		
@@ -65,8 +65,7 @@ public class GuardScript : MonoBehaviour {
 								}
 						}
 				}
-		if ((player.transform.position - transform.position).magnitude < instakillRadius)
-						EgoSystem.interactWithGuard (true);
+
 
 			//walk towards the current waypoint
 		if (state == 3) {
@@ -102,6 +101,9 @@ public class GuardScript : MonoBehaviour {
 			}
 			transform.LookAt (walkTowards);
 			transform.position += deltaPosition;
+
+		if ((player.transform.position - transform.position).magnitude < instakillRadius)
+			EgoSystem.interactWithGuard (true);
 	}
 
 }

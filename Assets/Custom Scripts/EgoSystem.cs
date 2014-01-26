@@ -307,11 +307,11 @@ public class EgoSystem : MonoBehaviour {
 	public Texture2D ninja;
 	public Texture2D miner;
 	public Texture2D electrician;
-	public GUITexture egoDisplay;
+	GUITexture egoDisplay;
 
-	public GUIText switchesLeftText;
+	GUIText switchesLeftText;
 
-	public GUITexture minerLight;
+	GUITexture minerLight;
 
 	public Transform trapPrefab;
 
@@ -360,6 +360,10 @@ public class EgoSystem : MonoBehaviour {
 		switchesLeft = maxSwitches;
 		currentlyChangingEgo = false;
 
+		minerLight = GameObject.FindGameObjectWithTag ("BlindingLight").guiTexture;
+		egoDisplay = GameObject.FindGameObjectWithTag ("EgoDisplay").guiTexture;
+		switchesLeftText = GameObject.FindGameObjectWithTag ("SwitchesLeft").guiText;
+
 		standardEgo = new StandardEgo();
 		thiefEgo = new ThiefEgo();
 		birdmanEgo = new BirdmanEgo();
@@ -396,13 +400,31 @@ public class EgoSystem : MonoBehaviour {
 		//electrician = (Texture2D)Resources.Load ("Images/Electrician.png");
 
 	}
-
-	public static void interactWithGuard(bool withinKillRange) {
-		if(!shouldDieFromGuard)
-			shouldDieFromGuard = (withinKillRange || GameObject.FindGameObjectWithTag("Player").GetComponent<CharacterMotor>().isThief);
+	
+	bool dying = false;
+	Vector3 placeOfDeath;
+	public void Reset() {
+		if (dying) {
+			return;
+		}
+		dying = true;
+		placeOfDeath = transform.position;
+		StartCoroutine (ResetHelper ());
 	}
 
-	public void Reset () {
+	public IEnumerator ResetHelper () {
+		int iters = 50;
+		float delay = 0.9f / iters;
+		float increment = 30f / iters;
+		// Show death mask
+		for (int i = 0; i < iters; i++) {
+			transform.position = placeOfDeath;
+			transform.RotateAround (transform.position - (Vector3.up * 0.5f), transform.forward, Mathf.Pow(i / 20f, 2) * increment);
+			yield return new WaitForSeconds(delay);
+		}
+
+		yield return new WaitForSeconds (0.5f);
+	
 		switchesLeft = maxSwitches;
 		currentEgo.DeInit (this);
 		standardEgo.Init (this);
@@ -420,144 +442,154 @@ public class EgoSystem : MonoBehaviour {
 		player.transform.position = spawnPoint.transform.position;
 		player.transform.rotation = spawnPoint.transform.rotation;
 		player.GetComponent<CharacterMotor> ().isDead = false;
+
+		dying = false;
+
 		switchesLeftText.text = "Ego Switches Left: " + switchesLeft;
+	}
+
+	public static void interactWithGuard(bool withinKillRange) {
+		if(!shouldDieFromGuard)
+			shouldDieFromGuard = (withinKillRange || GameObject.FindGameObjectWithTag("Player").GetComponent<CharacterMotor>().isThief);
 	}
 
 	// Update is called once per frame
 	void Update () {
 		timeSinceLastAction += Time.deltaTime;
-		if (timeWithShoesLeft >= 0)
-			timeWithShoesLeft -= Time.deltaTime;
-		else if(hasSuperShoes) {
-			timeWithShoesLeft = 0;
-			hasSuperShoes = false;
-			CharacterMotor mtr = GameObject.FindGameObjectWithTag("Player").GetComponent<CharacterMotor>();
-			mtr.jumping.baseHeight = 1.0f;
-			mtr.jumping.extraHeight = 1.0f;
-		}
-		if (usingZipline) {
-			GameObject player = GameObject.FindGameObjectWithTag("Player");
-			GameObject target = GameObject.FindGameObjectWithTag("ZiplineTarget");
-			CharacterMotor mtr = player.GetComponent<CharacterMotor>();
-			if((target.transform.position - player.transform.position).magnitude > deltaPosition.magnitude) {
-				player.transform.position += deltaPosition;
-			}
-			else {
-				hasZipline = false;
-				usingZipline = false;
-				deltaPosition = Vector3.zero;
-				mtr.ziplining = false;
-			}
-			return;
-		}
 
-		if (!inDark && currentEgo == minerEgo)
-			minerLight.enabled = true;
-		else
-			minerLight.enabled = false;
-
-
-		// Handle ego-changing button presses
-		if (!currentlyChangingEgo && switchesLeft > 0) {
-			//GUITexture guiTexture = GUITexture.FindObjectOfType<GUITexture>();
-			//GameObject guiTexture = GameObject.FindGameObjectWithTag ("EgoDisplay");
-			CharacterEgo changeEgo = null;
-			if (Input.GetKey ("1") && maxEgo >= 1) {
-				changeEgo = standardEgo;
-				egoDisplay.texture = standard;
-			} else if (Input.GetKey ("2") && maxEgo >= 2) {
-				changeEgo = thiefEgo;
-				egoDisplay.texture = thief;
-			} else if (Input.GetKey ("3") && maxEgo >= 3) {
-				changeEgo = inventorEgo;
-				egoDisplay.texture = inventor;
-			} else if (Input.GetKey ("4") && maxEgo >= 4) {
-				changeEgo = birdmanEgo;
-				egoDisplay.texture = birdman;
-			} else if (Input.GetKey ("5") && maxEgo >= 5) {
-				changeEgo = ninjaEgo;
-				egoDisplay.texture = ninja;
-			} else if (Input.GetKey ("6") && maxEgo >= 6) {
-				changeEgo = minerEgo;
-				egoDisplay.texture = miner;
-			} else if (Input.GetKey ("7") && maxEgo >= 7) {
-				changeEgo = electricianEgo;
-				egoDisplay.texture = electrician;
-			} else if (Input.GetKey ("8") && maxEgo >= 8) {
-				changeEgo = ghostEgo;
-				// TODO add texture
+		if (!dying) {
+			if (timeWithShoesLeft >= 0)
+				timeWithShoesLeft -= Time.deltaTime;
+			else if(hasSuperShoes) {
+				timeWithShoesLeft = 0;
+				hasSuperShoes = false;
+				CharacterMotor mtr = GameObject.FindGameObjectWithTag("Player").GetComponent<CharacterMotor>();
+				mtr.jumping.baseHeight = 1.0f;
+				mtr.jumping.extraHeight = 1.0f;
 			}
 
-
-
-			if (changeEgo != null) {
-				
-				setCurrentEgo (changeEgo);
+			if (usingZipline) {
+				GameObject player = GameObject.FindGameObjectWithTag("Player");
+				GameObject target = GameObject.FindGameObjectWithTag("ZiplineTarget");
+				CharacterMotor mtr = player.GetComponent<CharacterMotor>();
+				if((target.transform.position - player.transform.position).magnitude > deltaPosition.magnitude) {
+					player.transform.position += deltaPosition;
+				}
+				else {
+					hasZipline = false;
+					usingZipline = false;
+					deltaPosition = Vector3.zero;
+					mtr.ziplining = false;
+				}
+				return;
 			}
-		}
-		if (Input.GetKey ("e") && timeSinceLastAction >= 0.3f) {
-			RaycastHit forwardLookHit;
-			if (Camera.current) {
-				Debug.DrawRay (transform.position + Vector3.up * 0.5f, Camera.current.transform.forward * 200, Color.black);
-				Ray forwardRay = new Ray (transform.position + Vector3.up * 0.5f, Camera.current.transform.forward);
-				if (Physics.Raycast (forwardRay, out forwardLookHit, 2)) {
-					Collider collider = forwardLookHit.collider;
-					if (collider.tag == "HiddenObject") {
-						switch(forwardLookHit.collider.name) {
-							case "ZiplineDebris":
-								//Debug.Log ("Picked up a zipline!");
-								hasZipline = true;
-							break;
-							case "SuperShoesDebris":
-								hasSuperShoes = true;
-								CharacterMotor mtr = GameObject.FindGameObjectWithTag("Player").GetComponent<CharacterMotor>();
-								mtr.jumping.baseHeight = 1.0f;
-								mtr.jumping.extraHeight = 1.0f;
-								timeWithShoesLeft = 5.0f;//10 seconds to use shoes. MAYBE add timer?
-							break;
-							case "TrapDebris":
-								hasTrap = true;
-							break;
+
+			if (!inDark && currentEgo == minerEgo)
+				minerLight.enabled = true;
+			else
+				minerLight.enabled = false;
+
+			// Handle ego-changing button presses
+			if (!currentlyChangingEgo && switchesLeft > 0) {
+				//GUITexture guiTexture = GUITexture.FindObjectOfType<GUITexture>();
+				//GameObject guiTexture = GameObject.FindGameObjectWithTag ("EgoDisplay");
+				CharacterEgo changeEgo = null;
+				if (Input.GetKey ("1")) {
+					changeEgo = standardEgo;
+					egoDisplay.texture = standard;
+				} else if (Input.GetKey ("2")) {
+					changeEgo = thiefEgo;
+					egoDisplay.texture = thief;
+				} else if (Input.GetKey ("3")) {
+					changeEgo = inventorEgo;
+					egoDisplay.texture = inventor;
+				} else if (Input.GetKey ("4")) {
+					changeEgo = birdmanEgo;
+					egoDisplay.texture = birdman;
+				} else if (Input.GetKey ("5")) {
+					changeEgo = ninjaEgo;
+					egoDisplay.texture = ninja;
+				} else if (Input.GetKey ("6")) {
+					changeEgo = minerEgo;
+					egoDisplay.texture = miner;
+				} else if (Input.GetKey ("7")) {
+					changeEgo = electricianEgo;
+					egoDisplay.texture = electrician;
+				} else if (Input.GetKey ("8")) {
+					changeEgo = ghostEgo;
+					// TODO add texture
+				}
+
+
+
+				if (changeEgo != null) {
+					
+					setCurrentEgo (changeEgo);
+				}
+			}
+
+			if (Input.GetKey ("e") && timeSinceLastAction >= 0.3f) {
+				RaycastHit forwardLookHit;
+				if (Camera.current) {
+					Debug.DrawRay (transform.position + Vector3.up * 0.5f, Camera.current.transform.forward * 200, Color.black);
+					Ray forwardRay = new Ray (transform.position + Vector3.up * 0.5f, Camera.current.transform.forward);
+					if (Physics.Raycast (forwardRay, out forwardLookHit, 2)) {
+						Collider collider = forwardLookHit.collider;
+						if (collider.tag == "HiddenObject") {
+							switch(forwardLookHit.collider.name) {
+								case "ZiplineDebris":
+									//Debug.Log ("Picked up a zipline!");
+									hasZipline = true;
+								break;
+								case "SuperShoesDebris":
+									hasSuperShoes = true;
+									CharacterMotor mtr = GameObject.FindGameObjectWithTag("Player").GetComponent<CharacterMotor>();
+									mtr.jumping.baseHeight = 4.5f;
+									mtr.jumping.extraHeight = 4.5f;
+									timeWithShoesLeft = 10.0f;//10 seconds to use shoes. MAYBE add timer?
+								break;
+								case "TrapDebris":
+									hasTrap = true;
+								break;
+							}
+
+							collider.gameObject.SetActive (false);
+							//Debug.Log ("Colliding with hidden object!!");
+
+						} else if (collider.transform.root.gameObject.tag == "UnlockedDoor") {
+							Transform tmpRoot = collider.transform.root;
+							tmpRoot.gameObject.GetComponent<DoorState>().Toggle ();
+						} else if(hasZipline && forwardLookHit.collider.name == "Zipline") { 
+							Debug.Log ("Trying to use zipline");
+							//if raycast collides with zipline base, loop(transform, thread.sleep) till you get there 
+							GameObject player = GameObject.FindGameObjectWithTag("Player");
+							GameObject target = GameObject.FindGameObjectWithTag("ZiplineTarget");
+							deltaPosition = (target.transform.position - player.transform.position)/100;
+							//deltaPosition /= 100;
+							usingZipline = true;
+							player.GetComponent<CharacterMotor>().ziplining = true;
+						} else if (collider.tag == "LaserCP" && currentEgo == electricianEgo) {
+							collider.GetComponent<LaserCPBehaviour> ().DisableLasers ();
 						}
-
-						collider.gameObject.SetActive (false);
-						//Debug.Log ("Colliding with hidden object!!");
-
-					} else if (collider.transform.root.gameObject.tag == "UnlockedDoor") {
-						Transform tmpRoot = collider.transform.root;
-						tmpRoot.gameObject.GetComponent<DoorState>().Toggle ();
-					} else if(hasZipline && forwardLookHit.collider.name == "Zipline") { 
-						Debug.Log ("Trying to use zipline");
-						//if raycast collides with zipline base, loop(transform, thread.sleep) till you get there 
-						GameObject player = GameObject.FindGameObjectWithTag("Player");
-						GameObject target = GameObject.FindGameObjectWithTag("ZiplineTarget");
-						deltaPosition = (target.transform.position - player.transform.position)/100;
-						//deltaPosition /= 100;
-						usingZipline = true;
-						player.GetComponent<CharacterMotor>().ziplining = true;
-					} else if (collider.tag == "LaserCP" && currentEgo == electricianEgo) {
-						collider.GetComponent<LaserCPBehaviour> ().DisableLasers ();
+					} else if(hasTrap) { 
+						Instantiate (trapPrefab,
+						             gameObject.transform.position + gameObject.transform.forward * 1.2f + gameObject.transform.up * 1.0f,
+						             gameObject.transform.rotation);
+						hasTrap = false;
 					}
-				} else if(hasTrap) { 
-					Rigidbody trap = Instantiate (trapPrefab,
-					             gameObject.transform.position + gameObject.transform.forward * 1.2f + gameObject.transform.up * 1.0f,
-					             gameObject.transform.rotation) as Rigidbody;
-					hasTrap = false;
-				}
 
-				timeSinceLastAction = 0;
+					timeSinceLastAction = 0;
+				}
+			}
+
+			if (GameObject.FindGameObjectWithTag ("Player").GetComponent<CharacterMotor>().isDead || (Input.GetKey ("r") && timeSinceLastAction >= 0.3f))
+				Reset ();
+			//Debug.Log (shouldDieFromGuard + "");
+			if (shouldDieFromGuard) {
+				//Debug.Log ("about to reset");
+				Reset ();
+				
 			}
 		}
-
-
-		if (GameObject.FindGameObjectWithTag ("Player").GetComponent<CharacterMotor>().isDead || (Input.GetKey ("r") && timeSinceLastAction >= 0.3f))
-			Reset ();
-		//Debug.Log (shouldDieFromGuard + "");
-		if (shouldDieFromGuard) {
-			//Debug.Log ("about to reset");
-						Reset ();
-
-				}
-
 	}
 }
