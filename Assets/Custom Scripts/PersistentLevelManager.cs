@@ -13,6 +13,7 @@ public class PersistentLevelManager : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
+		Screen.showCursor = false;
 		if (mapsCompleted == 0) {
 			listOfLevels [0] = "map_tutorial";
 			levelCompletion [0] = false;
