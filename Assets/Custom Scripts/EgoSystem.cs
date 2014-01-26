@@ -402,6 +402,7 @@ public class EgoSystem : MonoBehaviour {
 		switchesLeftText.text = "Ego Switches Left: " + switchesLeft;
 
 		int mapsCompleted = PersistentLevelManager.GetMapsCompleted ();
+		Debug.Log (mapsCompleted + "adf");
 		if (mapsCompleted >= 0)
 			if (PersistentLevelManager.thiefIsUnlocked ())
 				maxEgo = 2;
@@ -417,7 +418,6 @@ public class EgoSystem : MonoBehaviour {
 			maxEgo++;
 		if (mapsCompleted >= 8)
 			maxEgo++;
-
 
 		//standard = (Texture2D)Resources.Load ("Images/Standard.png");
 		//thief = (Texture2D)Resources.Load ("Images/Thief.png"); 
@@ -541,25 +541,25 @@ public class EgoSystem : MonoBehaviour {
 				if (Input.GetKey ("1")) {
 					changeEgo = standardEgo;
 					egoDisplay.texture = standard;
-				} else if (Input.GetKey ("2")) {
+				} else if (Input.GetKey ("2") && maxEgo >= 2) {
 					changeEgo = thiefEgo;
 					egoDisplay.texture = thief;
-				} else if (Input.GetKey ("3")) {
+				} else if (Input.GetKey ("3") && maxEgo >= 3) {
 					changeEgo = inventorEgo;
 					egoDisplay.texture = inventor;
-				} else if (Input.GetKey ("4")) {
+				} else if (Input.GetKey ("4") && maxEgo >= 4) {
 					changeEgo = birdmanEgo;
 					egoDisplay.texture = birdman;
-				} else if (Input.GetKey ("5")) {
+				} else if (Input.GetKey ("5") && maxEgo >= 5) {
 					changeEgo = ninjaEgo;
 					egoDisplay.texture = ninja;
-				} else if (Input.GetKey ("6")) {
+				} else if (Input.GetKey ("6") && maxEgo >= 6) {
 					changeEgo = minerEgo;
 					egoDisplay.texture = miner;
-				} else if (Input.GetKey ("7")) {
+				} else if (Input.GetKey ("7") && maxEgo >= 7) {
 					changeEgo = electricianEgo;
 					egoDisplay.texture = electrician;
-				} else if (Input.GetKey ("8")) {
+				} else if (Input.GetKey ("8") && maxEgo >= 8) {
 					changeEgo = ghostEgo;
 					egoDisplay.texture = ghost;
 				}
