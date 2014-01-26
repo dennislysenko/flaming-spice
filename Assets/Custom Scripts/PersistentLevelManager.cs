@@ -44,6 +44,8 @@ public class PersistentLevelManager : MonoBehaviour {
 										levelCompletion [i] = true;
 						}
 				}
+		Screen.showCursor = false;
+
 		}
 	
 	// Update is called once per frame
