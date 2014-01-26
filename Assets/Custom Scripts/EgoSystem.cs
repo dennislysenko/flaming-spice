@@ -241,6 +241,44 @@ public class ElectricianEgo : CharacterEgo {
 	}
 }
 
+public class GhostEgo : CharacterEgo {
+	public override void Init(EgoSystem parent) {
+		// Open all laser control panels
+		GameObject[] caps = GameObject.FindGameObjectsWithTag("GhostBlock");
+		foreach (GameObject cap in caps) {
+			cap.SetActive (false);
+		}
+
+		GameObject[] panels = GameObject.FindGameObjectsWithTag("GhostHallucinationContainer");
+		foreach (GameObject panel in panels) {
+			Transform cap = panel.transform.GetChild(0);
+			if (cap) {
+				cap.gameObject.SetActive(true);
+			}
+		}
+		
+		parent.setCurrentlyChangingEgo (false);
+	}
+	
+	public override void DeInit(EgoSystem parent) {
+		// Activate all guards
+		GameObject[] panels = GameObject.FindGameObjectsWithTag("GhostBlockContainer");
+		foreach (GameObject panel in panels) {
+			Transform cap = panel.transform.GetChild(0);
+			if (cap) {
+				cap.gameObject.SetActive(true);
+			}
+		}
+
+		GameObject[] caps = GameObject.FindGameObjectsWithTag("GhostHallucination");
+		foreach (GameObject cap in caps) {
+			cap.SetActive (false);
+		}
+
+
+	}
+}
+
 
 public class EgoSystem : MonoBehaviour {
 	public int maxSwitches = 5;
@@ -283,6 +321,7 @@ public class EgoSystem : MonoBehaviour {
 	CharacterEgo minerEgo;
 	CharacterEgo ninjaEgo;
 	CharacterEgo electricianEgo;
+	CharacterEgo ghostEgo;
 
 	public static void SetInDark(bool update) {
 		Debug.Log ("anything happened");
@@ -324,6 +363,7 @@ public class EgoSystem : MonoBehaviour {
 		minerEgo = new MinerEgo ();
 		ninjaEgo = new NinjaEgo ();
 		electricianEgo = new ElectricianEgo ();
+		ghostEgo = new GhostEgo ();
 
 		// Standard Ego should NOT deinit
 		// Thief Ego should NOT deinit
@@ -331,6 +371,7 @@ public class EgoSystem : MonoBehaviour {
 		inventorEgo.DeInit (this);
 		// Miner Ego should NOT deinit
 		// Ninja Ego should NOT deinit
+		ghostEgo.DeInit (this);
 		
 		currentEgo = standardEgo;
 
@@ -420,6 +461,9 @@ public class EgoSystem : MonoBehaviour {
 			} else if (Input.GetKey ("7")) {
 				changeEgo = electricianEgo;
 				egoDisplay.texture = electrician;
+			} else if (Input.GetKey ("0")) {
+				changeEgo = ghostEgo;
+				// TODO add texture
 			}
 
 
