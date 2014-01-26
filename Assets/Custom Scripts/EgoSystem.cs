@@ -537,10 +537,13 @@ public class EgoSystem : MonoBehaviour {
 			if (Input.GetKey ("e") && timeSinceLastAction >= 0.3f) {
 				RaycastHit forwardLookHit;
 				if (Camera.current) {
-					Debug.DrawRay (transform.position + Vector3.up * 0.5f, Camera.current.transform.forward * 200, Color.black);
-					Ray forwardRay = new Ray (transform.position + Vector3.up * 0.5f, Camera.current.transform.forward);
-					if (Physics.Raycast (forwardRay, out forwardLookHit, 2)) {
+					Debug.DrawRay (Camera.current.transform.position - Vector3.up * 0.3f + transform.forward * 0.4f,
+					               Camera.current.transform.forward * 200, Color.black);
+					Ray forwardRay = new Ray (Camera.current.transform.position - Vector3.up * 0.3f + transform.forward * 0.4f,
+					                          Camera.current.transform.forward);
+					if (Physics.Raycast (forwardRay, out forwardLookHit, 3)) {
 						Collider collider = forwardLookHit.collider;
+						Debug.Log (collider.name);
 						if (collider.tag == "HiddenObject") {
 							switch(forwardLookHit.collider.name) {
 								case "ZiplineDebris":

@@ -102,6 +102,7 @@ public class GuardScript : MonoBehaviour {
 			}
 			transform.LookAt (walkTowards);
 			transform.position += deltaPosition;
+
 		float instakillSize;
 		if (player.GetComponent<CharacterMotor> ().isElectrician)
 			instakillSize = instakillWithElectrician;
