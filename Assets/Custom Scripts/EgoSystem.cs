@@ -202,12 +202,18 @@ public class MinerEgo : CharacterEgo {
 public class NinjaEgo : CharacterEgo {
 	public override void Init(EgoSystem parent) {
 		// Deactivate all guards
+		GameObject player = GameObject.FindGameObjectWithTag("Player");
+		CharacterMotor mtr = player.GetComponent<CharacterMotor>();
+		mtr.isNinja = true;
 
 		parent.setCurrentlyChangingEgo (false);
 	}
 
 	public override void DeInit(EgoSystem parent) {
 		// Activate all guards
+		GameObject player = GameObject.FindGameObjectWithTag("Player");
+		CharacterMotor mtr = player.GetComponent<CharacterMotor>();
+		mtr.isNinja = false;
 	}
 }
 
