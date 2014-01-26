@@ -246,6 +246,15 @@ public class EgoSystem : MonoBehaviour {
 	public int maxSwitches = 5;
 	public static int switchesLeft;
 
+	bool hasZipline = false;
+	bool hasSuperShoes = false;
+	bool hasTrap = false;
+
+	bool usingZipline = false;
+	Vector3 deltaPosition = Vector3.zero;
+
+	float timeWithShoesLeft = 0.0f;
+
 	public static bool inDark = false;
 
 	float timeSinceLastDoorChange = 0.3f;
@@ -352,6 +361,31 @@ public class EgoSystem : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		timeSinceLastDoorChange += Time.deltaTime;
+		if (timeWithShoesLeft >= 0)
+			timeWithShoesLeft -= Time.deltaTime;
+		else if(hasSuperShoes) {
+			timeWithShoesLeft = 0;
+			hasSuperShoes = false;
+			CharacterMotor mtr = GameObject.FindGameObjectWithTag("Player").GetComponent<CharacterMotor>();
+			mtr.jumping.baseHeight = 3.0f;
+			mtr.jumping.extraHeight = 3.0f;
+		}
+
+		if (usingZipline) {
+			GameObject player = GameObject.FindGameObjectWithTag("Player");
+			GameObject target = GameObject.FindGameObjectWithTag("ZiplineTarget");
+			CharacterMotor mtr = player.GetComponent<CharacterMotor>();
+			if((target.transform.position - player.transform.position).magnitude > deltaPosition.magnitude) {
+				player.transform.position += deltaPosition;
+			}
+			else {
+				hasZipline = false;
+				usingZipline = false;
+				deltaPosition = Vector3.zero;
+				mtr.ziplining = false;
+			}
+			return;
+		}
 
 		if (!inDark && currentEgo == minerEgo)
 			minerLight.enabled = true;
@@ -397,20 +431,44 @@ public class EgoSystem : MonoBehaviour {
 		if (Input.GetKey ("e")) {
 			RaycastHit forwardLookHit;
 			if (Camera.current) {
-				// Debug.DrawRay (transform.position + Vector3.up * 0.5f, Camera.current.transform.forward * 200, Color.black);
+				Debug.DrawRay (transform.position + Vector3.up * 0.5f, Camera.current.transform.forward * 200, Color.black);
 				Ray forwardRay = new Ray (transform.position + Vector3.up * 0.5f, Camera.current.transform.forward);
 				if (Physics.Raycast (forwardRay, out forwardLookHit, 2)) {
 					Collider collider = forwardLookHit.collider;
-					if (forwardLookHit.collider.tag == "HiddenObject") {
-						Debug.Log ("Colliding with hidden object!!");
+					if (collider.tag == "HiddenObject") {
+						switch(forwardLookHit.collider.name) {
+							case "ZiplineDebris":
+								//Debug.Log ("Picked up a zipline!");
+								hasZipline = true;
+							break;
+							case "SuperShoesDebris":
+								hasSuperShoes = true;
+								timeWithShoesLeft = 10.0f;//10 seconds to use shoes. MAYBE add timer?
+							break;
+							case "TrapDebris":
+								hasTrap = true;
+							break;
+						}
+						//Debug.Log ("Colliding with hidden object!!");
+
 					} else if (collider.transform.root.gameObject.tag == "UnlockedDoor" && timeSinceLastDoorChange >= 0.3f) {
 						Transform tmpRoot = collider.transform.root;
 						tmpRoot.gameObject.GetComponent<DoorState>().Toggle ();
 						timeSinceLastDoorChange = 0;
-					} else if (collider.tag == "LaserCP") {
-						Debug.Log ("Jesus");
+					} else if(hasZipline && forwardLookHit.collider.name == "Zipline") { 
+						Debug.Log ("Trying to use zipline");
+						//if raycast collides with zipline base, loop(transform, thread.sleep) till you get there 
+						GameObject player = GameObject.FindGameObjectWithTag("Player");
+						GameObject target = GameObject.FindGameObjectWithTag("ZiplineTarget");
+						deltaPosition = (target.transform.position - player.transform.position)/100;
+						//deltaPosition /= 100;
+						usingZipline = true;
+						player.GetComponent<CharacterMotor>().ziplining = true;
+					} else if (collider.tag == "LaserCP" && currentEgo == electricianEgo) {
 						collider.GetComponent<LaserCPBehaviour> ().DisableLasers ();
 					}
+				} else if(hasTrap) { 
+					//place traps. last thing
 				}
 			}
 		}
