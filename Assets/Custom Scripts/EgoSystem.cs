@@ -296,13 +296,9 @@ public class EgoSystem : MonoBehaviour {
 
 	public static bool inDark = false;
 
-<<<<<<< HEAD
-	static float timeSinceLastDoorChange = 0.3f;
-
 	static bool shouldDieFromGuard = false;
-=======
+
 	float timeSinceLastAction = 0.3f;
->>>>>>> 8df09f210d80232a64b322723dab09419f76fc12
 
 	public Texture2D standard;
 	public Texture2D thief; 
@@ -489,12 +485,7 @@ public class EgoSystem : MonoBehaviour {
 				setCurrentEgo (changeEgo);
 			}
 		}
-<<<<<<< HEAD
-		if (Input.GetKey ("e")) {
-=======
-
 		if (Input.GetKey ("e") && timeSinceLastAction >= 0.3f) {
->>>>>>> 8df09f210d80232a64b322723dab09419f76fc12
 			RaycastHit forwardLookHit;
 			if (Camera.current) {
 				Debug.DrawRay (transform.position + Vector3.up * 0.5f, Camera.current.transform.forward * 200, Color.black);
