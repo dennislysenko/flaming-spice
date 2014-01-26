@@ -10,6 +10,7 @@ public class TutorialCube : MonoBehaviour {
 	void Start () {
 		DontDestroyOnLoad(GameObject.FindGameObjectWithTag("PersistentLevelManager"));
 		textManager = GameObject.FindGameObjectWithTag("TextManager");
+		//TODO: stop this from showing up past the first load
 		textManager.guiText.text = "Welcome to Alterego!";
 	}
 	
