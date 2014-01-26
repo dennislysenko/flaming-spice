@@ -17,6 +17,8 @@ public class GuardScript : MonoBehaviour {
 	float wayPointTolerance = 2.0f;
 	float instakillRadius = 1.5f;
 	float instakillWithElectrician = 9.0f;
+	public bool inLight = true;
+
 	// Use this for initialization
 	void Start () {
 		
@@ -30,7 +32,7 @@ public class GuardScript : MonoBehaviour {
 		Vector3 walkTowards = waypoints[wayPointToWalkTo].position;
 		state = 1;
 		GameObject player = GameObject.FindGameObjectWithTag ("Player");
-		if (!player.GetComponent<CharacterMotor> ().isNinja) {
+		if (!player.GetComponent<CharacterMotor> ().isNinja && inLight) {
 						for (float yShift = 0.0f; yShift <= 2.0f; yShift+=1.0f) {
 								for (float angle = -maxAngleOfVision; angle <= 0; angle += -maxAngleOfVision/(3*angle)) {
 										direction = (Quaternion.AngleAxis (angle, Vector3.up) * transform.forward).normalized;
