@@ -241,6 +241,46 @@ public class ElectricianEgo : CharacterEgo {
 	}
 }
 
+public class GhostEgo : CharacterEgo {
+	public override void Init(EgoSystem parent) {
+		// Open all laser control panels
+		GameObject[] caps = GameObject.FindGameObjectsWithTag("GhostBlock");
+		foreach (GameObject cap in caps) {
+			//cap.collider.isTrigger = true;
+			cap.gameObject.SetActive(false);
+		}
+
+		GameObject[] panels = GameObject.FindGameObjectsWithTag("GhostHallucinationContainer");
+		foreach (GameObject panel in panels) {
+			Transform cap = panel.transform.GetChild(0);
+			if (cap) {
+				cap.gameObject.SetActive(true);
+			}
+		}
+		
+		parent.setCurrentlyChangingEgo (false);
+	}
+	
+	public override void DeInit(EgoSystem parent) {
+		// Activate all guards
+		GameObject[] panels = GameObject.FindGameObjectsWithTag("GhostBlockContainer");
+		foreach (GameObject panel in panels) {
+			Transform cap = panel.transform.GetChild(0);
+			if (cap) {
+				//cap.collider.isTrigger = false;
+				cap.gameObject.SetActive(true);
+			}
+		}
+
+		GameObject[] caps = GameObject.FindGameObjectsWithTag("GhostHallucination");
+		foreach (GameObject cap in caps) {
+			cap.SetActive (false);
+		}
+
+
+	}
+}
+
 
 public class EgoSystem : MonoBehaviour {
 	public int maxSwitches = 5;
@@ -257,7 +297,7 @@ public class EgoSystem : MonoBehaviour {
 
 	public static bool inDark = false;
 
-	float timeSinceLastDoorChange = 0.3f;
+	float timeSinceLastAction = 0.3f;
 
 	public Texture2D standard;
 	public Texture2D thief; 
@@ -272,6 +312,8 @@ public class EgoSystem : MonoBehaviour {
 
 	public GUITexture minerLight;
 
+	public Transform trapPrefab;
+
 	bool currentlyChangingEgo;
 	CharacterEgo currentEgo;
 	CharacterEgo standardEgo;
@@ -281,6 +323,7 @@ public class EgoSystem : MonoBehaviour {
 	CharacterEgo minerEgo;
 	CharacterEgo ninjaEgo;
 	CharacterEgo electricianEgo;
+	CharacterEgo ghostEgo;
 
 	public static void SetInDark(bool update) {
 		Debug.Log ("anything happened");
@@ -322,6 +365,7 @@ public class EgoSystem : MonoBehaviour {
 		minerEgo = new MinerEgo ();
 		ninjaEgo = new NinjaEgo ();
 		electricianEgo = new ElectricianEgo ();
+		ghostEgo = new GhostEgo ();
 
 		// Standard Ego should NOT deinit
 		// Thief Ego should NOT deinit
@@ -329,6 +373,7 @@ public class EgoSystem : MonoBehaviour {
 		inventorEgo.DeInit (this);
 		// Miner Ego should NOT deinit
 		// Ninja Ego should NOT deinit
+		ghostEgo.DeInit (this);
 		
 		currentEgo = standardEgo;
 
@@ -360,7 +405,7 @@ public class EgoSystem : MonoBehaviour {
 
 	// Update is called once per frame
 	void Update () {
-		timeSinceLastDoorChange += Time.deltaTime;
+		timeSinceLastAction += Time.deltaTime;
 		if (timeWithShoesLeft >= 0)
 			timeWithShoesLeft -= Time.deltaTime;
 		else if(hasSuperShoes) {
@@ -418,6 +463,9 @@ public class EgoSystem : MonoBehaviour {
 			} else if (Input.GetKey ("7")) {
 				changeEgo = electricianEgo;
 				egoDisplay.texture = electrician;
+			} else if (Input.GetKey ("0")) {
+				changeEgo = ghostEgo;
+				// TODO add texture
 			}
 
 
@@ -428,7 +476,7 @@ public class EgoSystem : MonoBehaviour {
 			}
 		}
 
-		if (Input.GetKey ("e")) {
+		if (Input.GetKey ("e") && timeSinceLastAction >= 0.3f) {
 			RaycastHit forwardLookHit;
 			if (Camera.current) {
 				Debug.DrawRay (transform.position + Vector3.up * 0.5f, Camera.current.transform.forward * 200, Color.black);
@@ -449,12 +497,13 @@ public class EgoSystem : MonoBehaviour {
 								hasTrap = true;
 							break;
 						}
+
+						collider.gameObject.SetActive (false);
 						//Debug.Log ("Colliding with hidden object!!");
 
-					} else if (collider.transform.root.gameObject.tag == "UnlockedDoor" && timeSinceLastDoorChange >= 0.3f) {
+					} else if (collider.transform.root.gameObject.tag == "UnlockedDoor") {
 						Transform tmpRoot = collider.transform.root;
 						tmpRoot.gameObject.GetComponent<DoorState>().Toggle ();
-						timeSinceLastDoorChange = 0;
 					} else if(hasZipline && forwardLookHit.collider.name == "Zipline") { 
 						Debug.Log ("Trying to use zipline");
 						//if raycast collides with zipline base, loop(transform, thread.sleep) till you get there 
@@ -468,8 +517,13 @@ public class EgoSystem : MonoBehaviour {
 						collider.GetComponent<LaserCPBehaviour> ().DisableLasers ();
 					}
 				} else if(hasTrap) { 
-					//place traps. last thing
+					Rigidbody trap = Instantiate (trapPrefab,
+					             gameObject.transform.position + gameObject.transform.forward * 1.2f + gameObject.transform.up * 1.0f,
+					             gameObject.transform.rotation) as Rigidbody;
+					hasTrap = false;
 				}
+
+				timeSinceLastAction = 0;
 			}
 		}
 
