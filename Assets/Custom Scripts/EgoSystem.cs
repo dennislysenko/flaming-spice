@@ -205,7 +205,12 @@ public class NinjaEgo : CharacterEgo {
 		// Deactivate all guards
 		GameObject player = GameObject.FindGameObjectWithTag("Player");
 		CharacterMotor mtr = player.GetComponent<CharacterMotor>();
+<<<<<<< HEAD
 		mtr.isInventor = false;
+=======
+		mtr.isNinja = true;
+
+>>>>>>> a83e894429fbb46c33214206bb3b93e44a06c892
 		parent.setCurrentlyChangingEgo (false);
 	}
 
@@ -213,7 +218,34 @@ public class NinjaEgo : CharacterEgo {
 		// Activate all guards
 		GameObject player = GameObject.FindGameObjectWithTag("Player");
 		CharacterMotor mtr = player.GetComponent<CharacterMotor>();
+<<<<<<< HEAD
 		mtr.isInventor = false;
+=======
+		mtr.isNinja = false;
+	}
+}
+
+public class ElectricianEgo : CharacterEgo {
+	public override void Init(EgoSystem parent) {
+		// Open all laser control panels
+		GameObject[] caps = GameObject.FindGameObjectsWithTag("LaserCPCap");
+		foreach (GameObject cap in caps) {
+			cap.SetActive (false);
+		}
+		
+		parent.setCurrentlyChangingEgo (false);
+	}
+	
+	public override void DeInit(EgoSystem parent) {
+		// Activate all guards
+		GameObject[] panels = GameObject.FindGameObjectsWithTag("LaserCP");
+		foreach (GameObject panel in panels) {
+			Transform cap = panel.transform.GetChild(0);
+			if (cap) {
+				cap.gameObject.SetActive(true);
+			}
+		}
+>>>>>>> a83e894429fbb46c33214206bb3b93e44a06c892
 	}
 }
 
@@ -256,6 +288,7 @@ public class EgoSystem : MonoBehaviour {
 	CharacterEgo inventorEgo;
 	CharacterEgo minerEgo;
 	CharacterEgo ninjaEgo;
+	CharacterEgo electricianEgo;
 
 	public static void SetInDark(bool update) {
 		Debug.Log ("anything happened");
@@ -296,6 +329,7 @@ public class EgoSystem : MonoBehaviour {
 		inventorEgo = new InventorEgo ();
 		minerEgo = new MinerEgo ();
 		ninjaEgo = new NinjaEgo ();
+		electricianEgo = new ElectricianEgo ();
 
 		// Standard Ego should NOT deinit
 		// Thief Ego should NOT deinit
@@ -318,7 +352,7 @@ public class EgoSystem : MonoBehaviour {
 
 	}
 
-	void Reset () {
+	public void Reset () {
 		switchesLeft = maxSwitches;
 		currentEgo.DeInit (this);
 		standardEgo.Init (this);
@@ -389,6 +423,9 @@ public class EgoSystem : MonoBehaviour {
 			} else if (Input.GetKey ("6")) {
 				changeEgo = minerEgo;
 				egoDisplay.texture = miner;
+			} else if (Input.GetKey ("7")) {
+				changeEgo = electricianEgo;
+				egoDisplay.texture = electrician;
 			}
 
 
@@ -426,7 +463,6 @@ public class EgoSystem : MonoBehaviour {
 						Transform tmpRoot = collider.transform.root;
 						tmpRoot.gameObject.GetComponent<DoorState>().Toggle ();
 						timeSinceLastDoorChange = 0;
-
 					} else if(hasZipline && forwardLookHit.collider.name == "Zipline") { 
 						Debug.Log ("Trying to use zipline");
 						//if raycast collides with zipline base, loop(transform, thread.sleep) till you get there 
@@ -438,10 +474,14 @@ public class EgoSystem : MonoBehaviour {
 						player.GetComponent<CharacterMotor>().ziplining = true;
 
 						
+
+					} else if (collider.tag == "LaserCP") {
+						Debug.Log ("Jesus");
+						collider.GetComponent<LaserCPBehaviour> ().DisableLasers ();
+					}
 					} else if(hasTrap) { 
 						//place traps. last thing
 					}
-				}
 			}
 		}
 

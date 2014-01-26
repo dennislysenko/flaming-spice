@@ -1,10 +1,10 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="MonoDevelop.Default" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Custom Scripts\MinerTrigger.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Custom Scripts\EgoSystem.cs">
     <Files>
       <File FileName="Assets\Custom Scripts\MinerTrigger.cs" Line="20" Column="29" />
-      <File FileName="Assets\Custom Scripts\EgoSystem.cs" Line="340" Column="32" />
-      <File FileName="Assets\Standard Assets\Character Controllers\Sources\Scripts\CharacterMotor.js" Line="526" Column="4" />
+      <File FileName="Assets\Custom Scripts\EgoSystem.cs" Line="493" Column="6" />
+      <File FileName="Assets\Standard Assets\Character Controllers\Sources\Scripts\CharacterMotor.js" Line="664" Column="1" />
       <File FileName="Assets\Custom Scripts\ChangeIcon.js" Line="35" Column="9" />
     </Files>
   </MonoDevelop.Ide.Workbench>
