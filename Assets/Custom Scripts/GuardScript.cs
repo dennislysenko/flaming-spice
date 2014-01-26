@@ -107,7 +107,7 @@ public class GuardScript : MonoBehaviour {
 			instakillSize = instakillWithElectrician;
 		else
 			instakillSize = instakillRadius;
-		if ((player.transform.position - transform.position) < instakillSize)
+		if ((player.transform.position - transform.position).magnitude < instakillSize)
 			EgoSystem.interactWithGuard (true);
 	}
 
