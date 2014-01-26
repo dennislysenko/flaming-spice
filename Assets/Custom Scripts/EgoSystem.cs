@@ -381,13 +381,10 @@ public class EgoSystem : MonoBehaviour {
 
 		switchesLeftText.text = "Ego Switches Left: " + switchesLeft;
 
-		int mapsCompleted = PersitentLevelManager.GetMapsCompleted () {
+		int mapsCompleted = PersitentLevelManager.GetMapsCompleted ();
 			if (mapsCompleted >= 0)
 				if(PersitentLevelManager.thiefIsUnlocked())
 			   		maxEgo = 2;
-
-
-		}
 
 		//standard = (Texture2D)Resources.Load ("Images/Standard.png");
 		//thief = (Texture2D)Resources.Load ("Images/Thief.png"); 
