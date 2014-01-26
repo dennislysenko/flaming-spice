@@ -4,6 +4,16 @@ using System.Collections;
 public class DoorState : MonoBehaviour {
 	bool open = false;
 
+	public void Open() {
+		if (!open)
+			Toggle ();
+	}
+
+	public void Close() {
+		if (open)
+			Toggle ();
+	}
+
 	public void Toggle() {
 		int angle = 90;
 		if (open) {

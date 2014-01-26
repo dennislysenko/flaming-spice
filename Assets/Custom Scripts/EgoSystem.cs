@@ -366,8 +366,13 @@ public class EgoSystem : MonoBehaviour {
 		switchesLeftText.text = "Ego Switches Left: " + switchesLeft;
 	}
 
+	GameObject[] lasers;
+	GameObject[] unlockedDoors;
 	// Use this for initialization
 	void Start () {
+		lasers = GameObject.FindGameObjectsWithTag ("Laser");
+		unlockedDoors = GameObject.FindGameObjectsWithTag ("UnlockedDoor");
+
 		switchesLeft = maxSwitches;
 		currentlyChangingEgo = false;
 
@@ -449,6 +454,13 @@ public class EgoSystem : MonoBehaviour {
 		}
 
 		yield return new WaitForSeconds (0.5f);
+
+		foreach (GameObject laser in lasers) {
+			laser.transform.Find ("Beam").gameObject.SetActive(true);
+		}
+		foreach (GameObject door in unlockedDoors) {
+			door.GetComponent<DoorState> ().Close ();
+		}
 	
 		switchesLeft = maxSwitches;
 		currentEgo.DeInit (this);
