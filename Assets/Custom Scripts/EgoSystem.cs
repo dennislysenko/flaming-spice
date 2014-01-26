@@ -284,8 +284,7 @@ public class GhostEgo : CharacterEgo {
 
 public class EgoSystem : MonoBehaviour {
 	public int maxSwitches = 5;
-	public static int switchesLeft;
-
+	int switchesLeft;
 	bool hasZipline = false;
 	bool hasSuperShoes = false;
 	bool hasTrap = false;
@@ -296,6 +295,8 @@ public class EgoSystem : MonoBehaviour {
 	float timeWithShoesLeft = 0.0f;
 
 	public static bool inDark = false;
+
+	static bool shouldDieFromGuard = false;
 
 	float timeSinceLastAction = 0.3f;
 
@@ -314,6 +315,8 @@ public class EgoSystem : MonoBehaviour {
 
 	public Transform trapPrefab;
 
+	int maxEgo = 1;
+
 	bool currentlyChangingEgo;
 	CharacterEgo currentEgo;
 	CharacterEgo standardEgo;
@@ -326,7 +329,6 @@ public class EgoSystem : MonoBehaviour {
 	CharacterEgo ghostEgo;
 
 	public static void SetInDark(bool update) {
-		Debug.Log ("anything happened");
 		inDark = update;
 	}
 
@@ -383,6 +385,12 @@ public class EgoSystem : MonoBehaviour {
 
 		switchesLeftText.text = "Ego Switches Left: " + switchesLeft;
 
+		int mapsCompleted = PersitentLevelManager.GetMapsCompleted ();
+		maxEgo = 10;
+			if (mapsCompleted >= 0)
+				if (PersitentLevelManager.thiefIsUnlocked ())
+						maxEgo = 2;
+
 		//standard = (Texture2D)Resources.Load ("Images/Standard.png");
 		//thief = (Texture2D)Resources.Load ("Images/Thief.png"); 
 		//inventor = (Texture2D)Resources.Load ("Images/Inventor.png");
@@ -392,7 +400,7 @@ public class EgoSystem : MonoBehaviour {
 		//electrician = (Texture2D)Resources.Load ("Images/Electrician.png");
 
 	}
-
+	
 	bool dying = false;
 	public void Reset() {
 		if (dying) {
@@ -413,11 +421,18 @@ public class EgoSystem : MonoBehaviour {
 		}
 
 		yield return new WaitForSeconds (0.5f);
-
+	
 		switchesLeft = maxSwitches;
 		currentEgo.DeInit (this);
 		standardEgo.Init (this);
 		currentEgo = standardEgo;
+		egoDisplay.texture = standard;
+
+		hasZipline = false;
+		hasSuperShoes = false;
+		hasTrap = false;
+
+		shouldDieFromGuard = false;
 
 		GameObject spawnPoint = GameObject.FindGameObjectWithTag("Spawn");
 		GameObject player = GameObject.FindGameObjectWithTag("Player");
@@ -427,6 +442,12 @@ public class EgoSystem : MonoBehaviour {
 
 		dying = false;
 
+		switchesLeftText.text = "Ego Switches Left: " + switchesLeft;
+	}
+
+	public static void interactWithGuard(bool withinKillRange) {
+		if(!shouldDieFromGuard)
+			shouldDieFromGuard = (withinKillRange || GameObject.FindGameObjectWithTag("Player").GetComponent<CharacterMotor>().isThief);
 	}
 
 	// Update is called once per frame
@@ -558,9 +579,14 @@ public class EgoSystem : MonoBehaviour {
 				}
 			}
 
-			if (GameObject.FindGameObjectWithTag ("Player").GetComponent<CharacterMotor>().isDead)
+			if (GameObject.FindGameObjectWithTag ("Player").GetComponent<CharacterMotor>().isDead || (Input.GetKey ("r") && timeSinceLastAction >= 0.3f))
 				Reset ();
+			//Debug.Log (shouldDieFromGuard + "");
+			if (shouldDieFromGuard) {
+				//Debug.Log ("about to reset");
+				Reset ();
+				
+			}
 		}
-
 	}
 }

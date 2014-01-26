@@ -36,9 +36,9 @@ var dot : float = Vector3.Dot(sightVec, heading);
 
 
 //If the player is in a ~120 degree FOV
-if(dot > .5 && Physics.Raycast(transform.position, heading, ray, 20)) {
+if(dot > .5 && Physics.Raycast(transform.position, heading, ray, 30)) {
 	//Use raycast to check that it is in his chasing range.
-	if(ray.collider.gameObject.tag == "Player") {
+	//if(ray.collider.gameObject.tag == "Player") {
 	print("maybe a person");
 		personalLastSighting = ray.point;
 		returning = false;
@@ -48,11 +48,11 @@ if(dot > .5 && Physics.Raycast(transform.position, heading, ray, 20)) {
 		pos.y = 0;
 		transform.LookAt(pos);
 		transform.position += pos * Time.deltaTime * speed;
-	}
+	//}
 
 }
 //If you saw them before... but not anymore.
-else if((personalLastSighting - player.transform.position).sqrMagnitude > .00001 && (personalLastSighting - transform.position).sqrMagnitude < .1 ){
+else if(/*(personalLastSighting - player.transform.position).sqrMagnitude > .01 && */(personalLastSighting - transform.position).sqrMagnitude < .1 ){
 	if( chaseTimer <= chaseWaitTime ){
 		chaseTimer += Time.deltaTime;
 		print("going to old point");

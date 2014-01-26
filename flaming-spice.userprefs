@@ -1,13 +1,44 @@
 ﻿<Properties>
+<<<<<<< HEAD
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Custom Scripts\EgoSystem.cs">
+    <Files>
+      <File FileName="Assets\Custom Scripts\MinerTrigger.cs" Line="20" Column="29" />
+      <File FileName="Assets\Custom Scripts\EgoSystem.cs" Line="94" Column="4" />
+      <File FileName="Assets\Standard Assets\Character Controllers\Sources\Scripts\CharacterMotor.js" Line="1" Column="1" />
+      <File FileName="Assets\Custom Scripts\ChangeIcon.js" Line="35" Column="9" />
+      <File FileName="Assets\Custom Scripts\GuardScript.cs" Line="80" Column="23" />
+=======
+<<<<<<< HEAD
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Custom Scripts\TutorialExit.cs">
+    <Files>
+      <File FileName="flaming-spice.sln" Line="57" Column="10" />
+      <File FileName="Assets\Custom Scripts\ExitTrigger.cs" Line="3" Column="1" />
+      <File FileName="Assets\Custom Scripts\EgoSystem.cs" Line="1" Column="1" />
+      <File FileName="Assets\Standard Assets\Character Controllers\Sources\Scripts\FPSInputController.js" Line="1" Column="1" />
+      <File FileName="Assets\Custom Scripts\LightFollowPlayer.cs" Line="1" Column="1" />
+      <File FileName="Assets\Custom Scripts\TextTrigger.js" Line="1" Column="1" />
+      <File FileName="Assets\Custom Scripts\PersitentLevelManager.cs" Line="1" Column="1" />
+      <File FileName="Assets\Custom Scripts\LevelCube.cs" Line="1" Column="1" />
+      <File FileName="Assets\Custom Scripts\TutorialCube.cs" Line="1" Column="1" />
+      <File FileName="Assets\Custom Scripts\TutorialExit.cs" Line="16" Column="38" />
+=======
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="MonoDevelop.Default" />
   <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Custom Scripts\TutorialInventorBootsTextBehaviour.cs">
     <Files>
+<<<<<<< HEAD
       <File FileName="Assets\Custom Scripts\EgoSystem.cs" Line="501" Column="31" />
       <File FileName="Assets\Custom Scripts\TextTrigger.js" Line="15" Column="2" />
       <File FileName="Assets\Custom Scripts\TutorialInventorBootsTextBehaviour.cs" Line="1" Column="1" />
       <File FileName="Assets\Custom Scripts\TriggerFire.cs" Line="9" Column="3" />
       <File FileName="Assets\Custom Scripts\FireBehaviour.cs" Line="12" Column="4" />
       <File FileName="Assets\Custom Scripts\ExitTrigger.cs" Line="14" Column="2" />
+=======
+      <File FileName="Assets\Custom Scripts\EgoSystem.cs" Line="400" Column="1" />
+>>>>>>> fc302fb8ca1adeffd6998c41882f23ddecdd4f63
+>>>>>>> b058d90b131ac44fdc306b4b77342f127c1e6ac6
+>>>>>>> 018656be85d2e437aba96c805792fde11ff168a6
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

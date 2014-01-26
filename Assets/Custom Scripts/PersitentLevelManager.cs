@@ -7,6 +7,9 @@ public class PersitentLevelManager : MonoBehaviour {
 	private static bool[] levelCompletion = new bool[2];
 	private static int mapsCompleted = 0;
 
+	private static bool thiefUnlocked = false;
+
+
 	// Use this for initialization
 	void Start () {
 		if (mapsCompleted == 0) {
@@ -48,6 +51,14 @@ public class PersitentLevelManager : MonoBehaviour {
 		}
 	}
 
+	public static int GetMapsCompleted() {
+		return mapsCompleted;
+	}
+
+	public static bool thiefIsUnlocked() {
+		return thiefUnlocked;
+	}
+
 	static int IndexOf (string target) {
 		int counter = 0;
 		foreach (string val in listOfLevels) {
@@ -57,5 +68,8 @@ public class PersitentLevelManager : MonoBehaviour {
 			counter++;
 		}
 		return -1;
+	}
+	public static void unlockThief() {
+		thiefUnlocked = true;
 	}
 }
