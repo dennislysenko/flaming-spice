@@ -5,7 +5,7 @@ public class GuardScript : MonoBehaviour {
 
 	float speed = 5.0f;
 	float chaseDistance = 10.0f;
-	float maxAngleOfVision = 60.0f;
+	float maxAngleOfVision = 30.0f;
 	int state;//1 for patrolling, 3 for chasing
 	public Transform[] waypoints;
 	int wayPointToWalkTo = 0;
@@ -77,7 +77,7 @@ public class GuardScript : MonoBehaviour {
 		}
 			Vector3 deltaPosition = (walkTowards - transform.position).normalized*speed*Time.deltaTime;
 			deltaPosition.y = 0;
-			walkTowards.y = 1.4f;
+			walkTowards.y = 6.0f;
 			transform.LookAt (walkTowards);
 			transform.position += deltaPosition;
 	}
