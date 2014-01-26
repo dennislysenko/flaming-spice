@@ -480,10 +480,10 @@ public class EgoSystem : MonoBehaviour {
 		player.transform.rotation = spawnPoint.transform.rotation;
 		player.GetComponent<CharacterMotor> ().isDead = false;
 
-		GuardScript[] guards = GameObject.FindObjectsOfType<GuardScript> ();
-		foreach (GuardScript guard in guards) {
-			guard.gameObject.GetComponent<GuardScript>().inLight = false;
-		}
+		//GuardScript[] guards = GameObject.FindObjectsOfType<GuardScript> ();
+		//foreach (GuardScript guard in guards) {
+		//	guard.gameObject.GetComponent<GuardScript>().inLight = false;
+		//}
 
 		dying = false;
 
