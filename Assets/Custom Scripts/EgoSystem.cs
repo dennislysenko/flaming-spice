@@ -409,10 +409,12 @@ public class EgoSystem : MonoBehaviour {
 	
 	bool dying = false;
 	Vector3 placeOfDeath;
-	public void Reset() {
+	public void Reset(string deathText="") {
 		if (dying) {
 			return;
 		}
+
+		GameObject.FindGameObjectWithTag ("TextManager").guiText.text = deathText;
 		dying = true;
 		placeOfDeath = transform.position;
 		StartCoroutine (ResetHelper ());
@@ -450,6 +452,8 @@ public class EgoSystem : MonoBehaviour {
 		player.GetComponent<CharacterMotor> ().isDead = false;
 
 		dying = false;
+
+		GameObject.FindGameObjectWithTag ("TextManager").guiText.text = "";
 
 		switchesLeftText.text = "Ego Switches Left: " + switchesLeft;
 	}
