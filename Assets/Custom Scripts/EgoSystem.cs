@@ -402,11 +402,13 @@ public class EgoSystem : MonoBehaviour {
 	}
 	
 	bool dying = false;
+	Vector3 placeOfDeath;
 	public void Reset() {
 		if (dying) {
 			return;
 		}
 		dying = true;
+		placeOfDeath = transform.position;
 		StartCoroutine (ResetHelper ());
 	}
 
@@ -416,6 +418,7 @@ public class EgoSystem : MonoBehaviour {
 		float increment = 30f / iters;
 		// Show death mask
 		for (int i = 0; i < iters; i++) {
+			transform.position = placeOfDeath;
 			transform.RotateAround (transform.position - (Vector3.up * 0.5f), transform.forward, Mathf.Pow(i / 20f, 2) * increment);
 			yield return new WaitForSeconds(delay);
 		}
