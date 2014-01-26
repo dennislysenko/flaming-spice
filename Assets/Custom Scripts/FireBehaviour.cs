@@ -6,7 +6,7 @@ public class FireBehaviour : MonoBehaviour {
 
 	IEnumerator Burn() {
 		Debug.Log ("Starting to burn player...");
-		yield return new WaitForSeconds(0.4f);
+		yield return new WaitForSeconds(0.3f);
 
 		if (player) {
 			player.GetComponent<EgoSystem> ().Reset ();
