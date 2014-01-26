@@ -16,6 +16,7 @@ public class GuardScript : MonoBehaviour {
 	int wayPointToWalkTo = 0;
 	float wayPointTolerance = 2.0f;
 	float instakillRadius = 1.5f;
+	float instakillWithElectrician = 9.0f;
 	// Use this for initialization
 	void Start () {
 		
@@ -102,7 +103,7 @@ public class GuardScript : MonoBehaviour {
 			transform.LookAt (walkTowards);
 			transform.position += deltaPosition;
 
-		if ((player.transform.position - transform.position).magnitude < instakillRadius)
+		if ((player.transform.position - transform.position).magnitude < player.GetComponent<CharacterMotor>().isElectrician ? instakillWithElectrician :instakillRadius)
 			EgoSystem.interactWithGuard (true);
 	}
 

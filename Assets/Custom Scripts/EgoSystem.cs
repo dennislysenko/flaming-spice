@@ -225,6 +225,9 @@ public class ElectricianEgo : CharacterEgo {
 		foreach (GameObject cap in caps) {
 			cap.SetActive (false);
 		}
+		GameObject player = GameObject.FindGameObjectWithTag("Player");
+		CharacterMotor mtr = player.GetComponent<CharacterMotor>();
+		mtr.isElectrician = true;
 		
 		parent.setCurrentlyChangingEgo (false);
 	}
@@ -238,6 +241,9 @@ public class ElectricianEgo : CharacterEgo {
 				cap.gameObject.SetActive(true);
 			}
 		}
+		GameObject player = GameObject.FindGameObjectWithTag("Player");
+		CharacterMotor mtr = player.GetComponent<CharacterMotor>();
+		mtr.isElectrician = false;
 	}
 }
 
