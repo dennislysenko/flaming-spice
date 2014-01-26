@@ -14,10 +14,9 @@ private var playerAnim : Animator;
 private var previousSighting : Vector3;
 
 function Awake() { 
-	nav = GetComponent(NavMeshAgent);
 	col = GetComponent(SphereCollider);
 	anim = GetComponent(Animator);
-	lastPlayerSighting = GameObject.FindGameObjectWithTag(Tags.gameController).GetComponent(LastPlayerSighting);
+	lastPlayerSighting = GameObject.FindGameObjectWithTag("GameController").GetComponent(LastPlayerSighting);
 	player = GameObject.FindGameObjectWithTag(Tags.player);
 	playerAnim = player.GetComponent(Animator);
 	//hash = GameObject.FindGameObjectWithTag(Tags.gameController).GetComponent(Tags.HashIDs);

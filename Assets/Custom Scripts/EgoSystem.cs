@@ -1,5 +1,6 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
+using System.Threading;
 
 public abstract class CharacterEgo {
 	public abstract void Init(EgoSystem parent);
@@ -202,12 +203,41 @@ public class MinerEgo : CharacterEgo {
 public class NinjaEgo : CharacterEgo {
 	public override void Init(EgoSystem parent) {
 		// Deactivate all guards
+		GameObject player = GameObject.FindGameObjectWithTag("Player");
+		CharacterMotor mtr = player.GetComponent<CharacterMotor>();
+		mtr.isNinja = true;
 
 		parent.setCurrentlyChangingEgo (false);
 	}
 
 	public override void DeInit(EgoSystem parent) {
 		// Activate all guards
+		GameObject player = GameObject.FindGameObjectWithTag("Player");
+		CharacterMotor mtr = player.GetComponent<CharacterMotor>();
+		mtr.isNinja = false;
+	}
+}
+
+public class ElectricianEgo : CharacterEgo {
+	public override void Init(EgoSystem parent) {
+		// Open all laser control panels
+		GameObject[] caps = GameObject.FindGameObjectsWithTag("LaserCPCap");
+		foreach (GameObject cap in caps) {
+			cap.SetActive (false);
+		}
+		
+		parent.setCurrentlyChangingEgo (false);
+	}
+	
+	public override void DeInit(EgoSystem parent) {
+		// Activate all guards
+		GameObject[] panels = GameObject.FindGameObjectsWithTag("LaserCP");
+		foreach (GameObject panel in panels) {
+			Transform cap = panel.transform.GetChild(0);
+			if (cap) {
+				cap.gameObject.SetActive(true);
+			}
+		}
 	}
 }
 
@@ -215,6 +245,8 @@ public class NinjaEgo : CharacterEgo {
 public class EgoSystem : MonoBehaviour {
 	public int maxSwitches = 5;
 	public static int switchesLeft;
+
+	public static bool inDark = false;
 
 	float timeSinceLastDoorChange = 0.3f;
 
@@ -229,6 +261,8 @@ public class EgoSystem : MonoBehaviour {
 
 	public GUIText switchesLeftText;
 
+	public GUITexture minerLight;
+
 	bool currentlyChangingEgo;
 	CharacterEgo currentEgo;
 	CharacterEgo standardEgo;
@@ -237,6 +271,12 @@ public class EgoSystem : MonoBehaviour {
 	CharacterEgo inventorEgo;
 	CharacterEgo minerEgo;
 	CharacterEgo ninjaEgo;
+	CharacterEgo electricianEgo;
+
+	public static void SetInDark(bool update) {
+		Debug.Log ("anything happened");
+		inDark = update;
+	}
 
 	public void setCurrentlyChangingEgo(bool changing) {
 		currentlyChangingEgo = changing;
@@ -272,6 +312,7 @@ public class EgoSystem : MonoBehaviour {
 		inventorEgo = new InventorEgo ();
 		minerEgo = new MinerEgo ();
 		ninjaEgo = new NinjaEgo ();
+		electricianEgo = new ElectricianEgo ();
 
 		// Standard Ego should NOT deinit
 		// Thief Ego should NOT deinit
@@ -294,7 +335,7 @@ public class EgoSystem : MonoBehaviour {
 
 	}
 
-	void Reset () {
+	public void Reset () {
 		switchesLeft = maxSwitches;
 		currentEgo.DeInit (this);
 		standardEgo.Init (this);
@@ -312,6 +353,11 @@ public class EgoSystem : MonoBehaviour {
 	void Update () {
 		timeSinceLastDoorChange += Time.deltaTime;
 
+		if (!inDark && currentEgo == minerEgo)
+			minerLight.enabled = true;
+		else
+			minerLight.enabled = false;
+
 		// Handle ego-changing button presses
 		if (!currentlyChangingEgo && switchesLeft > 0) {
 			//GUITexture guiTexture = GUITexture.FindObjectOfType<GUITexture>();
@@ -324,17 +370,20 @@ public class EgoSystem : MonoBehaviour {
 				changeEgo = thiefEgo;
 				egoDisplay.texture = thief;
 			} else if (Input.GetKey ("3")) {
-				changeEgo = ninjaEgo;
-				egoDisplay.texture = ninja;
+				changeEgo = inventorEgo;
+				egoDisplay.texture = inventor;
 			} else if (Input.GetKey ("4")) {
 				changeEgo = birdmanEgo;
 				egoDisplay.texture = birdman;
-			} else if (Input.GetKey ("6")) {
-				changeEgo = inventorEgo;
-				egoDisplay.texture = inventor;
 			} else if (Input.GetKey ("5")) {
+				changeEgo = ninjaEgo;
+				egoDisplay.texture = ninja;
+			} else if (Input.GetKey ("6")) {
 				changeEgo = minerEgo;
 				egoDisplay.texture = miner;
+			} else if (Input.GetKey ("7")) {
+				changeEgo = electricianEgo;
+				egoDisplay.texture = electrician;
 			}
 
 
@@ -345,7 +394,7 @@ public class EgoSystem : MonoBehaviour {
 			}
 		}
 
-		if (Input.GetKey ("e") && timeSinceLastDoorChange >= 0.3f) {
+		if (Input.GetKey ("e")) {
 			RaycastHit forwardLookHit;
 			if (Camera.current) {
 				// Debug.DrawRay (transform.position + Vector3.up * 0.5f, Camera.current.transform.forward * 200, Color.black);
@@ -354,10 +403,13 @@ public class EgoSystem : MonoBehaviour {
 					Collider collider = forwardLookHit.collider;
 					if (forwardLookHit.collider.tag == "HiddenObject") {
 						Debug.Log ("Colliding with hidden object!!");
-					} else if (collider.transform.root.gameObject.tag == "UnlockedDoor") {
+					} else if (collider.transform.root.gameObject.tag == "UnlockedDoor" && timeSinceLastDoorChange >= 0.3f) {
 						Transform tmpRoot = collider.transform.root;
 						tmpRoot.gameObject.GetComponent<DoorState>().Toggle ();
 						timeSinceLastDoorChange = 0;
+					} else if (collider.tag == "LaserCP") {
+						Debug.Log ("Jesus");
+						collider.GetComponent<LaserCPBehaviour> ().DisableLasers ();
 					}
 				}
 			}
