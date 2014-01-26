@@ -246,7 +246,8 @@ public class GhostEgo : CharacterEgo {
 		// Open all laser control panels
 		GameObject[] caps = GameObject.FindGameObjectsWithTag("GhostBlock");
 		foreach (GameObject cap in caps) {
-			cap.SetActive (false);
+			//cap.collider.isTrigger = true;
+			cap.gameObject.SetActive(false);
 		}
 
 		GameObject[] panels = GameObject.FindGameObjectsWithTag("GhostHallucinationContainer");
@@ -266,6 +267,7 @@ public class GhostEgo : CharacterEgo {
 		foreach (GameObject panel in panels) {
 			Transform cap = panel.transform.GetChild(0);
 			if (cap) {
+				//cap.collider.isTrigger = false;
 				cap.gameObject.SetActive(true);
 			}
 		}
