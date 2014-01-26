@@ -2,7 +2,16 @@ fileFormatVersion: 2
 guid: 00286c066042df24a8b36de2f2a1b0a6
 MonoImporter:
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - standard: {fileID: 2800000, guid: fe5a19f89f288814cb809b3a71f9a8db, type: 3}
+  - thief: {fileID: 2800000, guid: 926cef526950a5346a23ba8c82252b64, type: 3}
+  - inventor: {fileID: 2800000, guid: ff52b89820fdeaa46a4701840ddda4ce, type: 3}
+  - birdman: {fileID: 2800000, guid: 87bc3b2355dcf6e46befaa5556679010, type: 3}
+  - ninja: {fileID: 2800000, guid: 22881f6f9a825c643a7609c8e13d2e61, type: 3}
+  - miner: {fileID: 2800000, guid: d1a42daf36ac33440a65a2637507b519, type: 3}
+  - electrician: {fileID: 2800000, guid: 6f527cc5705a5804cac44396b7dc0e44, type: 3}
+  - ghost: {fileID: 2800000, guid: 25a509891e2e2f841aeb0154549ea1b5, type: 3}
+  - trapPrefab: {instanceID: 0}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 
