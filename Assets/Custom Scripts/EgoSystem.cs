@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 
 public abstract class CharacterEgo {
@@ -9,18 +9,30 @@ public abstract class CharacterEgo {
 public class StandardEgo : CharacterEgo {
 	public override void Init(EgoSystem parent) {
 		parent.setCurrentlyChangingEgo (false);
+		GameObject player = GameObject.FindGameObjectWithTag("Player");
+		CharacterMotor mtr = player.GetComponent<CharacterMotor>();
+		mtr.isStandard = true;
+
 	}
 	
 	public override void DeInit(EgoSystem parent) {
 		// do nothing.
 		// IMPORTANT: do NOT setCurrentlyChangingEgo(false).
 		// That would mean that you can switch to a new ego before the current ego finishes computing 
+		GameObject player = GameObject.FindGameObjectWithTag("Player");
+		CharacterMotor mtr = player.GetComponent<CharacterMotor>();
+		mtr.isStandard = false;
+
 	}
 }
 
 public class ThiefEgo : CharacterEgo {
 
 	public override void Init(EgoSystem parent) {
+		GameObject player = GameObject.FindGameObjectWithTag("Player");
+		CharacterMotor mtr = player.GetComponent<CharacterMotor>();
+		mtr.isThief = true;
+
 		GameObject[] doors = GameObject.FindGameObjectsWithTag("LockedDoor");
 		foreach (GameObject door in doors) {
 			if (door.activeInHierarchy) {
@@ -51,6 +63,9 @@ public class ThiefEgo : CharacterEgo {
 	}
 
 	public override void DeInit(EgoSystem parent) {
+		GameObject player = GameObject.FindGameObjectWithTag("Player");
+		CharacterMotor mtr = player.GetComponent<CharacterMotor>();
+		mtr.isThief = false;
 		GameObject[] doors = GameObject.FindGameObjectsWithTag("LockedDoor");
 		foreach (GameObject door in doors) {
 			if (door.activeInHierarchy) {
@@ -83,6 +98,8 @@ public class BirdmanEgo : CharacterEgo {
 	public override void Init(EgoSystem parent) {
 		GameObject player = GameObject.FindGameObjectWithTag("Player");
 		CharacterMotor mtr = player.GetComponent<CharacterMotor>();
+		mtr.jumping.baseHeight = 0.5f;
+		mtr.jumping.extraHeight = 0.5f;
 		mtr.isBirdman = true;
 
 		GameObject[] drafts = GameObject.FindGameObjectsWithTag("Draft");
@@ -96,6 +113,8 @@ public class BirdmanEgo : CharacterEgo {
 	public override void DeInit(EgoSystem parent) {
 		GameObject player = GameObject.FindGameObjectWithTag("Player");
 		CharacterMotor mtr = player.GetComponent<CharacterMotor>();
+		mtr.jumping.baseHeight = 1.0f;
+		mtr.jumping.extraHeight = 1.0f;
 		mtr.isBirdman = false;
 
 		GameObject[] drafts = GameObject.FindGameObjectsWithTag("Draft");
@@ -110,6 +129,9 @@ public class BirdmanEgo : CharacterEgo {
 
 public class InventorEgo : CharacterEgo {
 	public override void Init(EgoSystem parent) {
+		GameObject player = GameObject.FindGameObjectWithTag("Player");
+		CharacterMotor mtr = player.GetComponent<CharacterMotor>();
+		mtr.isInventor = true;
 		GameObject[] debrises = GameObject.FindGameObjectsWithTag("Debris");
 		foreach (GameObject debris in debrises) {
 			foreach (Transform child in debris.transform) {
@@ -124,8 +146,6 @@ public class InventorEgo : CharacterEgo {
 			}
 		}
 
-		GameObject player = GameObject.FindGameObjectWithTag("Player");
-		CharacterMotor mtr = player.GetComponent<CharacterMotor> ();
 		if (mtr != null && mtr.movement != null) {
 			float newSpeed = 3.5f;
 
@@ -138,6 +158,9 @@ public class InventorEgo : CharacterEgo {
 	}
 
 	public override void DeInit(EgoSystem parent) {
+		GameObject player = GameObject.FindGameObjectWithTag("Player");
+		CharacterMotor mtr = player.GetComponent<CharacterMotor>();
+		mtr.isInventor = false;
 		GameObject[] debrises = GameObject.FindGameObjectsWithTag("Debris");
 		foreach (GameObject debris in debrises) {
 			foreach (Transform child in debris.transform) {
@@ -152,8 +175,6 @@ public class InventorEgo : CharacterEgo {
 			}
 		}
 
-		GameObject player = GameObject.FindGameObjectWithTag("Player");
-		CharacterMotor mtr = player.GetComponent<CharacterMotor> ();
 		if (mtr != null && mtr.movement != null) {
 			float newSpeed = 6.0f;
 			
@@ -178,7 +199,40 @@ public class MinerEgo : CharacterEgo {
 	}
 }
 
+public class NinjaEgo : CharacterEgo {
+	public override void Init(EgoSystem parent) {
+		// Deactivate all guards
+
+		parent.setCurrentlyChangingEgo (false);
+	}
+
+	public override void DeInit(EgoSystem parent) {
+		// Activate all guards
+	}
+}
+
+
 public class EgoSystem : MonoBehaviour {
+	public int maxSwitches = 5;
+	public static int switchesLeft;
+
+	public static bool inDark = false;
+
+	float timeSinceLastDoorChange = 0.3f;
+
+	public Texture2D standard;
+	public Texture2D thief; 
+	public Texture2D inventor;
+	public Texture2D birdman;
+	public Texture2D ninja;
+	public Texture2D miner;
+	public Texture2D electrician;
+	public GUITexture egoDisplay;
+
+	public GUIText switchesLeftText;
+
+	public GUITexture minerLight;
+
 	bool currentlyChangingEgo;
 	CharacterEgo currentEgo;
 	CharacterEgo standardEgo;
@@ -186,6 +240,12 @@ public class EgoSystem : MonoBehaviour {
 	CharacterEgo birdmanEgo;
 	CharacterEgo inventorEgo;
 	CharacterEgo minerEgo;
+	CharacterEgo ninjaEgo;
+
+	public static void SetInDark(bool update) {
+		Debug.Log ("anything happened");
+		inDark = update;
+	}
 
 	public void setCurrentlyChangingEgo(bool changing) {
 		currentlyChangingEgo = changing;
@@ -206,10 +266,13 @@ public class EgoSystem : MonoBehaviour {
 		changeEgo.Init (this);
 
 		currentEgo = changeEgo;
+		switchesLeft--;
+		switchesLeftText.text = "Ego Switches Left: " + switchesLeft;
 	}
 
 	// Use this for initialization
 	void Start () {
+		switchesLeft = maxSwitches;
 		currentlyChangingEgo = false;
 
 		standardEgo = new StandardEgo();
@@ -217,32 +280,78 @@ public class EgoSystem : MonoBehaviour {
 		birdmanEgo = new BirdmanEgo();
 		inventorEgo = new InventorEgo ();
 		minerEgo = new MinerEgo ();
+		ninjaEgo = new NinjaEgo ();
 
 		// Standard Ego should NOT deinit
 		// Thief Ego should NOT deinit
 		birdmanEgo.DeInit (this);
 		inventorEgo.DeInit (this);
 		// Miner Ego should NOT deinit
+		// Ninja Ego should NOT deinit
 		
 		currentEgo = standardEgo;
+
+		switchesLeftText.text = "Ego Switches Left: " + switchesLeft;
+
+		//standard = (Texture2D)Resources.Load ("Images/Standard.png");
+		//thief = (Texture2D)Resources.Load ("Images/Thief.png"); 
+		//inventor = (Texture2D)Resources.Load ("Images/Inventor.png");
+		//birdman = (Texture2D)Resources.Load ("Images/Birdman.png");
+		//ninja = (Texture2D)Resources.Load ("Images/Ninja.png");
+		//miner = (Texture2D)Resources.Load ("Images/Miner.png");
+		//electrician = (Texture2D)Resources.Load ("Images/Electrician.png");
+
+	}
+
+	void Reset () {
+		switchesLeft = maxSwitches;
+		currentEgo.DeInit (this);
+		standardEgo.Init (this);
+		currentEgo = standardEgo;
+
+		GameObject spawnPoint = GameObject.FindGameObjectWithTag("Spawn");
+		GameObject player = GameObject.FindGameObjectWithTag("Player");
+		player.transform.position = spawnPoint.transform.position;
+		player.transform.rotation = spawnPoint.transform.rotation;
+		player.GetComponent<CharacterMotor> ().isDead = false;
+
 	}
 
 	// Update is called once per frame
 	void Update () {
+		timeSinceLastDoorChange += Time.deltaTime;
+
+		if (!inDark && currentEgo == minerEgo)
+			minerLight.enabled = true;
+		else
+			minerLight.enabled = false;
+
 		// Handle ego-changing button presses
-		if (!currentlyChangingEgo) {
+		if (!currentlyChangingEgo && switchesLeft > 0) {
+			//GUITexture guiTexture = GUITexture.FindObjectOfType<GUITexture>();
+			//GameObject guiTexture = GameObject.FindGameObjectWithTag ("EgoDisplay");
 			CharacterEgo changeEgo = null;
 			if (Input.GetKey ("1")) {
 				changeEgo = standardEgo;
+				egoDisplay.texture = standard;
 			} else if (Input.GetKey ("2")) {
 				changeEgo = thiefEgo;
+				egoDisplay.texture = thief;
 			} else if (Input.GetKey ("3")) {
-				changeEgo = birdmanEgo;
-			} else if (Input.GetKey ("4")) {
 				changeEgo = inventorEgo;
+				egoDisplay.texture = inventor;
+			} else if (Input.GetKey ("4")) {
+				changeEgo = birdmanEgo;
+				egoDisplay.texture = birdman;
 			} else if (Input.GetKey ("5")) {
+				changeEgo = ninjaEgo;
+				egoDisplay.texture = ninja;
+			} else if (Input.GetKey ("6")) {
 				changeEgo = minerEgo;
+				egoDisplay.texture = miner;
 			}
+
+
 
 			if (changeEgo != null) {
 				
@@ -250,7 +359,7 @@ public class EgoSystem : MonoBehaviour {
 			}
 		}
 
-		if (Input.GetKey ("e")) {
+		if (Input.GetKey ("e") && timeSinceLastDoorChange >= 0.3f) {
 			RaycastHit forwardLookHit;
 			if (Camera.current) {
 				// Debug.DrawRay (transform.position + Vector3.up * 0.5f, Camera.current.transform.forward * 200, Color.black);
@@ -262,9 +371,14 @@ public class EgoSystem : MonoBehaviour {
 					} else if (collider.transform.root.gameObject.tag == "UnlockedDoor") {
 						Transform tmpRoot = collider.transform.root;
 						tmpRoot.gameObject.GetComponent<DoorState>().Toggle ();
+						timeSinceLastDoorChange = 0;
 					}
 				}
 			}
 		}
+
+		if (GameObject.FindGameObjectWithTag ("Player").GetComponent<CharacterMotor>().isDead)
+			Reset ();
+
 	}
 }

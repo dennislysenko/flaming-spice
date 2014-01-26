@@ -1,10 +1,10 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Custom Scripts\EnemySight.js">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Custom Scripts\EnemyChase.js">
     <Files>
-      <File FileName="Assets\Custom Scripts\EnemyAI.js" Line="35" Column="8" />
-      <File FileName="Assets\Custom Scripts\EnemySight.js" Line="17" Column="25" />
-      <File FileName="Assets\Custom Scripts\Tags.js" Line="1" Column="1" />
+      <File FileName="Assets\Custom Scripts\EnemyChase.js" Line="14" Column="20" />
+      <File FileName="Assets\Custom Scripts\EnemySight.js" Line="19" Column="107" />
+      <File FileName="Assets\Custom Scripts\EnemyAI.js" Line="53" Column="19" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
