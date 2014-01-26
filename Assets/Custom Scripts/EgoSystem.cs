@@ -358,6 +358,9 @@ public class EgoSystem : MonoBehaviour {
 		switchesLeft = maxSwitches;
 		currentlyChangingEgo = false;
 
+		minerLight = GameObject.FindGameObjectWithTag ("BlindingLight").guiTexture;
+		egoDisplay = GameObject.FindGameObjectWithTag ("EgoDisplay").guiTexture;
+
 		standardEgo = new StandardEgo();
 		thiefEgo = new ThiefEgo();
 		birdmanEgo = new BirdmanEgo();
@@ -412,8 +415,8 @@ public class EgoSystem : MonoBehaviour {
 			timeWithShoesLeft = 0;
 			hasSuperShoes = false;
 			CharacterMotor mtr = GameObject.FindGameObjectWithTag("Player").GetComponent<CharacterMotor>();
-			mtr.jumping.baseHeight = 3.0f;
-			mtr.jumping.extraHeight = 3.0f;
+			mtr.jumping.baseHeight = 1.0f;
+			mtr.jumping.extraHeight = 1.0f;
 		}
 
 		if (usingZipline) {
@@ -463,7 +466,7 @@ public class EgoSystem : MonoBehaviour {
 			} else if (Input.GetKey ("7")) {
 				changeEgo = electricianEgo;
 				egoDisplay.texture = electrician;
-			} else if (Input.GetKey ("0")) {
+			} else if (Input.GetKey ("8")) {
 				changeEgo = ghostEgo;
 				// TODO add texture
 			}
@@ -491,6 +494,9 @@ public class EgoSystem : MonoBehaviour {
 							break;
 							case "SuperShoesDebris":
 								hasSuperShoes = true;
+								CharacterMotor mtr = GameObject.FindGameObjectWithTag("Player").GetComponent<CharacterMotor>();
+								mtr.jumping.baseHeight = 4.5f;
+								mtr.jumping.extraHeight = 4.5f;
 								timeWithShoesLeft = 10.0f;//10 seconds to use shoes. MAYBE add timer?
 							break;
 							case "TrapDebris":
