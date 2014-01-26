@@ -539,7 +539,9 @@ public class EgoSystem : MonoBehaviour {
 				timeSinceLastAction = 0;
 			}
 		}
-		if (GameObject.FindGameObjectWithTag ("Player").GetComponent<CharacterMotor>().isDead)
+
+
+		if (GameObject.FindGameObjectWithTag ("Player").GetComponent<CharacterMotor>().isDead || (Input.GetKey ("r") && timeSinceLastAction >= 0.3f))
 			Reset ();
 		//Debug.Log (shouldDieFromGuard + "");
 		if (shouldDieFromGuard) {
