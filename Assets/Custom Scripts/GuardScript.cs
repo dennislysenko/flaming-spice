@@ -15,6 +15,7 @@ public class GuardScript : MonoBehaviour {
 	public Transform[] waypoints;
 	int wayPointToWalkTo = 0;
 	float wayPointTolerance = 2.0f;
+	float instakillRadius = 2.0f;
 	// Use this for initialization
 	void Start () {
 		
@@ -27,7 +28,8 @@ public class GuardScript : MonoBehaviour {
 		Ray forwardRay;
 		Vector3 walkTowards = waypoints[wayPointToWalkTo].position;
 		state = 1;
-		if (!GameObject.FindGameObjectWithTag ("Player").GetComponent<CharacterMotor> ().isNinja) {
+		GameObject player = GameObject.FindGameObjectWithTag ("Player");
+		if (!player.GetComponent<CharacterMotor> ().isNinja) {
 						for (float yShift = 0.0f; yShift <= 2.0f; yShift+=1.0f) {
 								for (float angle = -maxAngleOfVision; angle <= 0; angle += -maxAngleOfVision/(3*angle)) {
 										direction = (Quaternion.AngleAxis (angle, Vector3.up) * transform.forward).normalized;
@@ -63,6 +65,9 @@ public class GuardScript : MonoBehaviour {
 								}
 						}
 				}
+		if ((player.transform.position - transform.position).magnitude < instakillRadius)
+						EgoSystem.interactWithGuard (true);
+
 			//walk towards the current waypoint
 		if (state == 3) {
 			EgoSystem.interactWithGuard(false);
