@@ -7,7 +7,7 @@ public class ExitTrigger : MonoBehaviour {
 
 	void OnTriggerEnter (Collider col) {
 		if (col.gameObject.name == "Alterego Player") {
-			PersitentLevelManager.LevelCompleted(level);
+			PersistentLevelManager.LevelCompleted(level);
 			Application.LoadLevel("LevelSelect");
 		}
 	}
