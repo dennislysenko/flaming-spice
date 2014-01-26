@@ -382,9 +382,10 @@ public class EgoSystem : MonoBehaviour {
 		switchesLeftText.text = "Ego Switches Left: " + switchesLeft;
 
 		int mapsCompleted = PersitentLevelManager.GetMapsCompleted ();
+		maxEgo = 10;
 			if (mapsCompleted >= 0)
-				if(PersitentLevelManager.thiefIsUnlocked())
-			   		maxEgo = 2;
+				if (PersitentLevelManager.thiefIsUnlocked ())
+						maxEgo = 2;
 
 		//standard = (Texture2D)Resources.Load ("Images/Standard.png");
 		//thief = (Texture2D)Resources.Load ("Images/Thief.png"); 
@@ -454,6 +455,7 @@ public class EgoSystem : MonoBehaviour {
 			minerLight.enabled = true;
 		else
 			minerLight.enabled = false;
+
 
 		// Handle ego-changing button presses
 		if (!currentlyChangingEgo && switchesLeft > 0) {
