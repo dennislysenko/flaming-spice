@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
   <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Custom Scripts\EgoSystem.cs">
@@ -9,4 +10,19 @@
     <BreakpointStore />
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+=======
+﻿<Properties>
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Custom Scripts\EnemyChase.js">
+    <Files>
+      <File FileName="Assets\Custom Scripts\EnemyChase.js" Line="14" Column="20" />
+      <File FileName="Assets\Custom Scripts\EnemySight.js" Line="19" Column="107" />
+      <File FileName="Assets\Custom Scripts\EnemyAI.js" Line="53" Column="19" />
+    </Files>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+>>>>>>> 10f84b7fac27ac4332894d5e391d9dea225c3ff3
 </Properties>
