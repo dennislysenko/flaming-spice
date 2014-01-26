@@ -225,6 +225,10 @@ public class ElectricianEgo : CharacterEgo {
 		foreach (GameObject cap in caps) {
 			cap.SetActive (false);
 		}
+		GameObject[] lcaps = GameObject.FindGameObjectsWithTag ("LightCPCap");
+		foreach (GameObject cap in lcaps) {
+			cap.SetActive(false);
+		}
 		GameObject player = GameObject.FindGameObjectWithTag("Player");
 		CharacterMotor mtr = player.GetComponent<CharacterMotor>();
 		mtr.isElectrician = true;
@@ -451,6 +455,11 @@ public class EgoSystem : MonoBehaviour {
 		player.transform.rotation = spawnPoint.transform.rotation;
 		player.GetComponent<CharacterMotor> ().isDead = false;
 
+		GuardScript[] guards = GameObject.FindObjectsOfType<GuardScript> ();
+		foreach (GuardScript guard in guards) {
+			guard.gameObject.GetComponent<GuardScript>().inLight = false;
+		}
+
 		dying = false;
 
 		GameObject.FindGameObjectWithTag ("TextManager").guiText.text = "";
@@ -583,6 +592,8 @@ public class EgoSystem : MonoBehaviour {
 							player.GetComponent<CharacterMotor>().ziplining = true;
 						} else if (collider.tag == "LaserCP" && currentEgo == electricianEgo) {
 							collider.GetComponent<LaserCPBehaviour> ().DisableLasers ();
+						} else if (collider.tag == "LightCP" && currentEgo == electricianEgo) {
+							collider.GetComponent<LightCPBehaviour>().DisableLights();
 						}
 					} else if(hasTrap) { 
 						Instantiate (trapPrefab,
