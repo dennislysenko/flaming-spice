@@ -284,8 +284,7 @@ public class GhostEgo : CharacterEgo {
 
 public class EgoSystem : MonoBehaviour {
 	public int maxSwitches = 5;
-	public static int switchesLeft;
-
+	int switchesLeft;
 	bool hasZipline = false;
 	bool hasSuperShoes = false;
 	bool hasTrap = false;
@@ -297,7 +296,13 @@ public class EgoSystem : MonoBehaviour {
 
 	public static bool inDark = false;
 
+<<<<<<< HEAD
+	static float timeSinceLastDoorChange = 0.3f;
+
+	static bool shouldDieFromGuard = false;
+=======
 	float timeSinceLastAction = 0.3f;
+>>>>>>> 8df09f210d80232a64b322723dab09419f76fc12
 
 	public Texture2D standard;
 	public Texture2D thief; 
@@ -326,7 +331,6 @@ public class EgoSystem : MonoBehaviour {
 	CharacterEgo ghostEgo;
 
 	public static void SetInDark(bool update) {
-		Debug.Log ("anything happened");
 		inDark = update;
 	}
 
@@ -388,6 +392,10 @@ public class EgoSystem : MonoBehaviour {
 		//electrician = (Texture2D)Resources.Load ("Images/Electrician.png");
 
 	}
+	public static void interactWithGuard(bool withinKillRange) {
+		if(!shouldDieFromGuard)
+			shouldDieFromGuard = (withinKillRange || GameObject.FindGameObjectWithTag("Player").GetComponent<CharacterMotor>().isThief);
+	}
 
 	public void Reset () {
 		switchesLeft = maxSwitches;
@@ -395,11 +403,18 @@ public class EgoSystem : MonoBehaviour {
 		standardEgo.Init (this);
 		currentEgo = standardEgo;
 
+		hasZipline = false;
+		hasSuperShoes = false;
+		hasTrap = false;
+
+		shouldDieFromGuard = false;
+
 		GameObject spawnPoint = GameObject.FindGameObjectWithTag("Spawn");
 		GameObject player = GameObject.FindGameObjectWithTag("Player");
 		player.transform.position = spawnPoint.transform.position;
 		player.transform.rotation = spawnPoint.transform.rotation;
 		player.GetComponent<CharacterMotor> ().isDead = false;
+		switchesLeftText.text = "Ego Switches Left: " + switchesLeft;
 
 	}
 
@@ -412,10 +427,9 @@ public class EgoSystem : MonoBehaviour {
 			timeWithShoesLeft = 0;
 			hasSuperShoes = false;
 			CharacterMotor mtr = GameObject.FindGameObjectWithTag("Player").GetComponent<CharacterMotor>();
-			mtr.jumping.baseHeight = 3.0f;
-			mtr.jumping.extraHeight = 3.0f;
+			mtr.jumping.baseHeight = 1.0f;
+			mtr.jumping.extraHeight = 1.0f;
 		}
-
 		if (usingZipline) {
 			GameObject player = GameObject.FindGameObjectWithTag("Player");
 			GameObject target = GameObject.FindGameObjectWithTag("ZiplineTarget");
@@ -475,8 +489,12 @@ public class EgoSystem : MonoBehaviour {
 				setCurrentEgo (changeEgo);
 			}
 		}
+<<<<<<< HEAD
+		if (Input.GetKey ("e")) {
+=======
 
 		if (Input.GetKey ("e") && timeSinceLastAction >= 0.3f) {
+>>>>>>> 8df09f210d80232a64b322723dab09419f76fc12
 			RaycastHit forwardLookHit;
 			if (Camera.current) {
 				Debug.DrawRay (transform.position + Vector3.up * 0.5f, Camera.current.transform.forward * 200, Color.black);
@@ -491,7 +509,10 @@ public class EgoSystem : MonoBehaviour {
 							break;
 							case "SuperShoesDebris":
 								hasSuperShoes = true;
-								timeWithShoesLeft = 10.0f;//10 seconds to use shoes. MAYBE add timer?
+								CharacterMotor mtr = GameObject.FindGameObjectWithTag("Player").GetComponent<CharacterMotor>();
+								mtr.jumping.baseHeight = 1.0f;
+								mtr.jumping.extraHeight = 1.0f;
+								timeWithShoesLeft = 5.0f;//10 seconds to use shoes. MAYBE add timer?
 							break;
 							case "TrapDebris":
 								hasTrap = true;
@@ -526,9 +547,14 @@ public class EgoSystem : MonoBehaviour {
 				timeSinceLastAction = 0;
 			}
 		}
-
 		if (GameObject.FindGameObjectWithTag ("Player").GetComponent<CharacterMotor>().isDead)
 			Reset ();
+		//Debug.Log (shouldDieFromGuard + "");
+		if (shouldDieFromGuard) {
+			//Debug.Log ("about to reset");
+						Reset ();
+
+				}
 
 	}
 }
