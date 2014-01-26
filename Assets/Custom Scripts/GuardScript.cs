@@ -103,7 +103,12 @@ public class GuardScript : MonoBehaviour {
 			transform.LookAt (walkTowards);
 			transform.position += deltaPosition;
 
-		if (player.transform.position - transform.position < player.GetComponent<CharacterMotor>().isElectrician ? instakillWithElectrician :instakillRadius)
+		float instakillSize;
+		if (player.GetComponent<CharacterMotor> ().isElectrician)
+			instakillSize = instakillWithElectrician;
+		else
+			instakillSize = instakillRadius;
+		if ((player.transform.position - transform.position).magnitude < instakillSize)
 			EgoSystem.interactWithGuard (true);
 	}
 

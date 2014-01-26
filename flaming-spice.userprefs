@@ -1,12 +1,19 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="MonoDevelop.Default" />
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
   <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Custom Scripts\GuardScript.cs">
     <Files>
-      <File FileName="Assets\Custom Scripts\MinerTrigger.cs" Line="20" Column="29" />
-      <File FileName="Assets\Custom Scripts\EgoSystem.cs" Line="596" Column="1" />
-      <File FileName="Assets\Custom Scripts\PersitentLevelManager.cs" Line="78" Column="1" />
-      <File FileName="Assets\Custom Scripts\TutorialExit.cs" Line="17" Column="38" />
-      <File FileName="Assets\Custom Scripts\GuardScript.cs" Line="19" Column="29" />
+      <File FileName="flaming-spice.sln" Line="58" Column="1" />
+      <File FileName="Assets\Custom Scripts\ExitTrigger.cs" Line="14" Column="2" />
+      <File FileName="Assets\Standard Assets\Character Controllers\Sources\Scripts\FPSInputController.js" Line="1" Column="1" />
+      <File FileName="Assets\Custom Scripts\LightFollowPlayer.cs" Line="1" Column="1" />
+      <File FileName="Assets\Custom Scripts\TextTrigger.js" Line="1" Column="1" />
+      <File FileName="Assets\Custom Scripts\PersitentLevelManager.cs" Line="8" Column="39" />
+      <File FileName="Assets\Custom Scripts\LevelCube.cs" Line="1" Column="1" />
+      <File FileName="Assets\Custom Scripts\TutorialCube.cs" Line="30" Column="22" />
+      <File FileName="Assets\Custom Scripts\TutorialExit.cs" Line="25" Column="2" />
+      <File FileName="Assets\Custom Scripts\GuardScript.cs" Line="106" Column="39" />
+      <File FileName="Assets\Custom Scripts\EgoSystem.cs" Line="602" Column="1" />
+      <File FileName="Assets\Standard Assets\Character Controllers\Sources\Scripts\CharacterMotor.js" Line="106" Column="2" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
