@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 
 public abstract class CharacterEgo {
@@ -216,6 +216,8 @@ public class EgoSystem : MonoBehaviour {
 	public int maxSwitches = 5;
 	public static int switchesLeft;
 
+	public static bool inDark = false;
+
 	float timeSinceLastDoorChange = 0.3f;
 
 	public Texture2D standard;
@@ -229,6 +231,8 @@ public class EgoSystem : MonoBehaviour {
 
 	public GUIText switchesLeftText;
 
+	public GUITexture minerLight;
+
 	bool currentlyChangingEgo;
 	CharacterEgo currentEgo;
 	CharacterEgo standardEgo;
@@ -237,6 +241,11 @@ public class EgoSystem : MonoBehaviour {
 	CharacterEgo inventorEgo;
 	CharacterEgo minerEgo;
 	CharacterEgo ninjaEgo;
+
+	public static void SetInDark(bool update) {
+		Debug.Log ("anything happened");
+		inDark = update;
+	}
 
 	public void setCurrentlyChangingEgo(bool changing) {
 		currentlyChangingEgo = changing;
@@ -312,6 +321,11 @@ public class EgoSystem : MonoBehaviour {
 	void Update () {
 		timeSinceLastDoorChange += Time.deltaTime;
 
+		if (!inDark && currentEgo == minerEgo)
+			minerLight.enabled = true;
+		else
+			minerLight.enabled = false;
+
 		// Handle ego-changing button presses
 		if (!currentlyChangingEgo && switchesLeft > 0) {
 			//GUITexture guiTexture = GUITexture.FindObjectOfType<GUITexture>();
@@ -324,15 +338,15 @@ public class EgoSystem : MonoBehaviour {
 				changeEgo = thiefEgo;
 				egoDisplay.texture = thief;
 			} else if (Input.GetKey ("3")) {
-				changeEgo = ninjaEgo;
-				egoDisplay.texture = ninja;
+				changeEgo = inventorEgo;
+				egoDisplay.texture = inventor;
 			} else if (Input.GetKey ("4")) {
 				changeEgo = birdmanEgo;
 				egoDisplay.texture = birdman;
-			} else if (Input.GetKey ("6")) {
-				changeEgo = inventorEgo;
-				egoDisplay.texture = inventor;
 			} else if (Input.GetKey ("5")) {
+				changeEgo = ninjaEgo;
+				egoDisplay.texture = ninja;
+			} else if (Input.GetKey ("6")) {
 				changeEgo = minerEgo;
 				egoDisplay.texture = miner;
 			}
