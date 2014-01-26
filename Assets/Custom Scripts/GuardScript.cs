@@ -98,7 +98,7 @@ public class GuardScript : MonoBehaviour {
 			} else {
 				deltaPosition = (walkTowards - transform.position).normalized * speed * Time.deltaTime;
 				deltaPosition.y = 0;
-				walkTowards.y = 6.0f;
+				walkTowards.y = player.transform.position.y;
 			}
 			transform.LookAt (walkTowards);
 			transform.position += deltaPosition;
