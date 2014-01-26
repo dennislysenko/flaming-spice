@@ -194,6 +194,9 @@ var isThief : boolean = false;
 var isInventor : boolean = false;
 
 @System.NonSerialized
+var ziplining : boolean = false;
+
+@System.NonSerialized
 var isMiner : boolean = false;
 
 @System.NonSerialized
@@ -515,6 +518,8 @@ private function ApplyGravityAndJumping (velocity : Vector3) {
 	}
 	else
 		currentDraftChange = 1;
+	if(isInventor && ziplining)
+		velocity.y = 0;
 	
 	return velocity;
 }
