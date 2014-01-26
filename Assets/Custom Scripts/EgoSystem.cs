@@ -317,6 +317,7 @@ public class EgoSystem : MonoBehaviour {
 	public Texture2D ninja;
 	public Texture2D miner;
 	public Texture2D electrician;
+	public Texture2D ghost;
 	GUITexture egoDisplay;
 
 	GUIText switchesLeftText;
@@ -396,10 +397,22 @@ public class EgoSystem : MonoBehaviour {
 		switchesLeftText.text = "Ego Switches Left: " + switchesLeft;
 
 		int mapsCompleted = PersistentLevelManager.GetMapsCompleted ();
-		maxEgo = 10;
-			if (mapsCompleted >= 0)
-				if (PersistentLevelManager.thiefIsUnlocked ())
-						maxEgo = 2;
+		if (mapsCompleted >= 0)
+			if (PersistentLevelManager.thiefIsUnlocked ())
+				maxEgo = 2;
+		if (mapsCompleted >= 2)
+			maxEgo++;
+		if (mapsCompleted >= 3)
+			maxEgo++;
+		if(mapsCompleted >= 4)
+			maxEgo++;
+		if (mapsCompleted >= 5)
+			maxEgo++;
+		if (mapsCompleted >= 6)
+			maxEgo++;
+		if (mapsCompleted >= 8)
+			maxEgo++;
+
 
 		//standard = (Texture2D)Resources.Load ("Images/Standard.png");
 		//thief = (Texture2D)Resources.Load ("Images/Thief.png"); 
@@ -536,7 +549,7 @@ public class EgoSystem : MonoBehaviour {
 					egoDisplay.texture = electrician;
 				} else if (Input.GetKey ("8")) {
 					changeEgo = ghostEgo;
-					// TODO add texture
+					egoDisplay.texture = ghost;
 				}
 
 
