@@ -13,36 +13,44 @@ public class PersistentLevelManager : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
+				if (mapsCompleted == 0) {
+						//read save data
+						listOfLevels [0] = "map_tutorial";
+						levelCompletion [0] = false;
+						listOfLevels [1] = "map_thief1";
+						levelCompletion [1] = false;
+						listOfLevels [2] = "map_thief2";
+						levelCompletion [2] = false;
+						listOfLevels [3] = "map_inventor1";
+						levelCompletion [3] = false;
+						listOfLevels [4] = "map_birdman1";
+						levelCompletion [4] = false;
+						listOfLevels [5] = "map_ninja1";
+						levelCompletion [5] = false;
+						listOfLevels [6] = "map_miner1";
+						levelCompletion [6] = false;
+						listOfLevels [7] = "map_electrician1";
+						levelCompletion [7] = false;
+						listOfLevels [8] = "map_electrician2";
+						levelCompletion [8] = false;
+						listOfLevels [9] = "map_ghost1";
+						levelCompletion [9] = false;
+						listOfLevels [10] = "map_ghost2";
+						levelCompletion [10] = false;
+
+						if (PlayerPrefs.HasKey ("mapsCompleted")) {
+								mapsCompleted = PlayerPrefs.GetInt ("mapsCompleted");
+								for (int i = 0; i < mapsCompleted; i++)
+										levelCompletion [i] = true;
+						}
+				}
 		Screen.showCursor = false;
-		if (mapsCompleted == 0) {
-			listOfLevels [0] = "map_tutorial";
-			levelCompletion [0] = false;
-			listOfLevels [1] = "map_thief1";
-			levelCompletion [1] = false;
-			listOfLevels [2] = "map_thief2";
-			levelCompletion [2] = false;
-			listOfLevels [3] = "map_inventor1";
-			levelCompletion [3] = false;
-			listOfLevels [4] = "map_birdman1";
-			levelCompletion [4] = false;
-			listOfLevels [5] = "map_ninja1";
-			levelCompletion [5] = false;
-			listOfLevels [6] = "map_miner1";
-			levelCompletion [6] = false;
-			listOfLevels [7] = "map_electrician1";
-			levelCompletion [7] = false;
-			listOfLevels [8] = "map_electrician2";
-			levelCompletion [8] = false;
-			listOfLevels [9] = "map_ghost1";
-			levelCompletion [9] = false;
-			listOfLevels [10] = "map_ghost2";
-			levelCompletion [10] = false;
+
 		}
-	}
 	
 	// Update is called once per frame
 	void Update () {
-	
+
 	}
 
 	public static int GetUnlock(int index) {
@@ -54,6 +62,7 @@ public class PersistentLevelManager : MonoBehaviour {
 		if (IndexOf (justFinished) >= mapsCompleted) {
 			levelCompletion[mapsCompleted] = true;
 			mapsCompleted++;
+			PlayerPrefs.SetInt ("mapsCompleted", mapsCompleted);
 		}
 	}
 
@@ -80,7 +89,7 @@ public class PersistentLevelManager : MonoBehaviour {
 	}
 
 	public static bool thiefIsUnlocked() {
-		return thiefUnlocked;
+		return thiefUnlocked || mapsCompleted >= 1;
 	}
 
 	static int IndexOf (string target) {
