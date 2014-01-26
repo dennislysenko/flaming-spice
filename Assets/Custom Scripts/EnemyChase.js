@@ -1,6 +1,6 @@
 ﻿#pragma strict
 
-public var speed   : float = 2f;
+public var speed   : float = 6f;
 public var chaseDistance = 20;
 public var fieldOfViewAngle : float = 60f;
 public var playerInSight : boolean;
@@ -35,9 +35,10 @@ var dot : float = Vector3.Dot(sightVec, heading);
 //Dot the two together
 
 
-//If the player is in a ~110 degree FOV
-if(dot > .55 && Physics.Raycast(transform.position, heading, ray, 10)) {
+//If the player is in a ~120 degree FOV
+if(dot > .5 && Physics.Raycast(transform.position, heading, ray, 20)) {
 	//Use raycast to check that it is in his chasing range.
+	if(ray.collider.gameObject.tag == "Player") {
 	print("maybe a person");
 		personalLastSighting = ray.point;
 		returning = false;
@@ -47,11 +48,11 @@ if(dot > .55 && Physics.Raycast(transform.position, heading, ray, 10)) {
 		pos.y = 0;
 		transform.LookAt(pos);
 		transform.position += pos * Time.deltaTime * speed;
-	
+	}
 
 }
 //If you saw them before... but not anymore.
-else if(!personalLastSighting.Equals(player.transform.position) && !personalLastSighting.Equals(transform.position) && !returning){
+else if((personalLastSighting - player.transform.position).sqrMagnitude > .00001 && (personalLastSighting - transform.position).sqrMagnitude < .1 ){
 	if( chaseTimer <= chaseWaitTime ){
 		chaseTimer += Time.deltaTime;
 		print("going to old point");
@@ -65,18 +66,22 @@ else if(!personalLastSighting.Equals(player.transform.position) && !personalLast
 		chaseTimer = 0f;
 	}
 }
-else if((transform.position - patrolWayPoints[wayPointIndex].position).sqrMagnitude >= 20 || returning) {
-	print("returning");
-	transform.LookAt(patrolWayPoints[wayPointIndex].position);
-	transform.position += transform.forward * Time.deltaTime * speed;
-	returning = true;
+else if(returning) {
+	if((transform.position - patrolWayPoints[wayPointIndex].position).sqrMagnitude >= .1 ){
+		print("returning");
+		transform.LookAt(patrolWayPoints[wayPointIndex].position);
+		transform.position += transform.forward * Time.deltaTime * speed;
+		returning = true;
+	} else {
+		returning = false;
+	}
 } else {
 	//Patrol
 	print("Potentially going to waypoint");
 	returning = false;
 	if(patrolWayPoints.Length > 0) {
 		patrolTimer += Time.deltaTime;
-		if(transform.position.Equals(patrolWayPoints[wayPointIndex].position) || patrolTimer >= patrolWaitTime) {
+		if((transform.position - patrolWayPoints[wayPointIndex].position).sqrMagnitude < .1 || patrolTimer >= patrolWaitTime) {
 			if(wayPointIndex >= patrolWayPoints.Length - 1)
                 wayPointIndex = 0;
             else
