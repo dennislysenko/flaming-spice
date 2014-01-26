@@ -13,6 +13,8 @@ public class TutorialExit : MonoBehaviour {
 		if (col.gameObject.name == "Alterego Player") {
 			if (firstWin) {
 				firstWin = false;
+				//PersitentLevelManager.listOfLevels[0] = "map_tutorial_secondtime";
+				PersitentLevelManager.unlockThief();
 				Application.LoadLevel ("map_tutorial_secondtime");
 			} else {
 				PersitentLevelManager.LevelCompleted(level);
