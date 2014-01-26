@@ -1,8 +1,13 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+/**
+ * The array should always be >= 2 in size. For !stationary, at least 2 points to patrol. For stationary, size is fixed at 2. [0] is guarding point, [1] is looking at point.
+ */
 public class GuardScript : MonoBehaviour {
 
+	public bool isStationary = false;
+	bool shouldMove = true;
 	float speed = 5.0f;
 	float chaseDistance = 10.0f;
 	float maxAngleOfVision = 30.0f;
@@ -71,13 +76,24 @@ public class GuardScript : MonoBehaviour {
 		if(state == 1) {
 			//walkTowards = waypoints[wayPointToWalkTo].position;
 			if((transform.position - walkTowards).magnitude < wayPointTolerance) {
-				wayPointToWalkTo = (1+wayPointToWalkTo)%waypoints.Length;
-
+				if(!isStationary)
+					wayPointToWalkTo = (1+wayPointToWalkTo)%waypoints.Length;
+				else
+					shouldMove = false;
 			}
+			else if(isStationary)
+				shouldMove = true;
+
 		}
-			Vector3 deltaPosition = (walkTowards - transform.position).normalized*speed*Time.deltaTime;
-			deltaPosition.y = 0;
-			walkTowards.y = 6.0f;
+		Vector3 deltaPosition;
+			if (!shouldMove) {
+				deltaPosition = Vector3.zero;
+				walkTowards = waypoints [1].position;
+			} else {
+				deltaPosition = (walkTowards - transform.position).normalized * speed * Time.deltaTime;
+				deltaPosition.y = 0;
+				walkTowards.y = 6.0f;
+			}
 			transform.LookAt (walkTowards);
 			transform.position += deltaPosition;
 	}
