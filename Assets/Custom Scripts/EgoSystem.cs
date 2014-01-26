@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 
 public abstract class CharacterEgo {
@@ -205,6 +205,8 @@ public class EgoSystem : MonoBehaviour {
 	public int maxSwitches = 5;
 	public static int switchesLeft;
 
+	public static bool inDark = false;
+
 	float timeSinceLastDoorChange = 0.3f;
 
 	public Texture2D standard;
@@ -218,6 +220,8 @@ public class EgoSystem : MonoBehaviour {
 
 	public GUIText switchesLeftText;
 
+	public GUITexture minerLight;
+
 	bool currentlyChangingEgo;
 	CharacterEgo currentEgo;
 	CharacterEgo standardEgo;
@@ -225,6 +229,11 @@ public class EgoSystem : MonoBehaviour {
 	CharacterEgo birdmanEgo;
 	CharacterEgo inventorEgo;
 	CharacterEgo minerEgo;
+
+	public static void SetInDark(bool update) {
+		Debug.Log ("anything happened");
+		inDark = update;
+	}
 
 	public void setCurrentlyChangingEgo(bool changing) {
 		currentlyChangingEgo = changing;
@@ -296,6 +305,11 @@ public class EgoSystem : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		timeSinceLastDoorChange += Time.deltaTime;
+
+		if (!inDark && currentEgo == minerEgo)
+			minerLight.enabled = true;
+		else
+			minerLight.enabled = false;
 
 		// Handle ego-changing button presses
 		if (!currentlyChangingEgo && switchesLeft > 0) {
