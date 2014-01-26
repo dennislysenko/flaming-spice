@@ -199,6 +199,17 @@ public class MinerEgo : CharacterEgo {
 	}
 }
 
+public class NinjaEgo : CharacterEgo {
+	public override void Init(EgoSystem parent) {
+		// Deactivate all guards
+
+		parent.setCurrentlyChangingEgo (false);
+	}
+
+	public override void DeInit(EgoSystem parent) {
+		// Activate all guards
+	}
+}
 
 
 public class EgoSystem : MonoBehaviour {
@@ -229,6 +240,7 @@ public class EgoSystem : MonoBehaviour {
 	CharacterEgo birdmanEgo;
 	CharacterEgo inventorEgo;
 	CharacterEgo minerEgo;
+	CharacterEgo ninjaEgo;
 
 	public static void SetInDark(bool update) {
 		Debug.Log ("anything happened");
@@ -268,11 +280,14 @@ public class EgoSystem : MonoBehaviour {
 		birdmanEgo = new BirdmanEgo();
 		inventorEgo = new InventorEgo ();
 		minerEgo = new MinerEgo ();
+		ninjaEgo = new NinjaEgo ();
+
 		// Standard Ego should NOT deinit
 		// Thief Ego should NOT deinit
 		birdmanEgo.DeInit (this);
 		inventorEgo.DeInit (this);
 		// Miner Ego should NOT deinit
+		// Ninja Ego should NOT deinit
 		
 		currentEgo = standardEgo;
 
@@ -323,9 +338,12 @@ public class EgoSystem : MonoBehaviour {
 				changeEgo = thiefEgo;
 				egoDisplay.texture = thief;
 			} else if (Input.GetKey ("3")) {
+				changeEgo = ninjaEgo;
+				egoDisplay.texture = ninja;
+			} else if (Input.GetKey ("4")) {
 				changeEgo = birdmanEgo;
 				egoDisplay.texture = birdman;
-			} else if (Input.GetKey ("4")) {
+			} else if (Input.GetKey ("6")) {
 				changeEgo = inventorEgo;
 				egoDisplay.texture = inventor;
 			} else if (Input.GetKey ("5")) {
