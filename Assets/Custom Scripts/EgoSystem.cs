@@ -205,12 +205,8 @@ public class NinjaEgo : CharacterEgo {
 		// Deactivate all guards
 		GameObject player = GameObject.FindGameObjectWithTag("Player");
 		CharacterMotor mtr = player.GetComponent<CharacterMotor>();
-<<<<<<< HEAD
-		mtr.isInventor = false;
-=======
 		mtr.isNinja = true;
 
->>>>>>> a83e894429fbb46c33214206bb3b93e44a06c892
 		parent.setCurrentlyChangingEgo (false);
 	}
 
@@ -218,9 +214,6 @@ public class NinjaEgo : CharacterEgo {
 		// Activate all guards
 		GameObject player = GameObject.FindGameObjectWithTag("Player");
 		CharacterMotor mtr = player.GetComponent<CharacterMotor>();
-<<<<<<< HEAD
-		mtr.isInventor = false;
-=======
 		mtr.isNinja = false;
 	}
 }
@@ -245,7 +238,6 @@ public class ElectricianEgo : CharacterEgo {
 				cap.gameObject.SetActive(true);
 			}
 		}
->>>>>>> a83e894429fbb46c33214206bb3b93e44a06c892
 	}
 }
 
@@ -439,11 +431,11 @@ public class EgoSystem : MonoBehaviour {
 		if (Input.GetKey ("e")) {
 			RaycastHit forwardLookHit;
 			if (Camera.current) {
-				// Debug.DrawRay (transform.position + Vector3.up * 0.5f, Camera.current.transform.forward * 200, Color.black);
+				Debug.DrawRay (transform.position + Vector3.up * 0.5f, Camera.current.transform.forward * 200, Color.black);
 				Ray forwardRay = new Ray (transform.position + Vector3.up * 0.5f, Camera.current.transform.forward);
 				if (Physics.Raycast (forwardRay, out forwardLookHit, 2)) {
-					//Collider collider = forwardLookHit.collider;
-					if (forwardLookHit.collider.tag == "HiddenObject") {
+					Collider collider = forwardLookHit.collider;
+					if (collider.tag == "HiddenObject") {
 						switch(forwardLookHit.collider.name) {
 							case "ZiplineDebris":
 								//Debug.Log ("Picked up a zipline!");
@@ -472,16 +464,12 @@ public class EgoSystem : MonoBehaviour {
 						//deltaPosition /= 100;
 						usingZipline = true;
 						player.GetComponent<CharacterMotor>().ziplining = true;
-
-						
-
-					} else if (collider.tag == "LaserCP") {
-						Debug.Log ("Jesus");
+					} else if (collider.tag == "LaserCP" && currentEgo == electricianEgo) {
 						collider.GetComponent<LaserCPBehaviour> ().DisableLasers ();
 					}
-					} else if(hasTrap) { 
-						//place traps. last thing
-					}
+				} else if(hasTrap) { 
+					//place traps. last thing
+				}
 			}
 		}
 
