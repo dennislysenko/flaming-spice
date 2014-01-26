@@ -526,7 +526,7 @@ function OnControllerColliderHit (hit : ControllerColliderHit) {
 		{
 			groundNormal = hit.normal;
 			var impulseVelocity : float = Vector3.Dot(groundNormal, movement.velocity);
-			Debug.Log(impulseVelocity);
+			
 			if(isNinja && impulseVelocity < -10.0f)
 				isDead = true;
 			else if(!isNinja && impulseVelocity < -15.0f)
