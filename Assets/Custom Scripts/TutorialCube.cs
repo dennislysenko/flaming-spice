@@ -27,6 +27,7 @@ public class TutorialCube : MonoBehaviour {
 			Debug.Log (PersitentLevelManager.IsLevelCompleted("map_tutorial") + "");
 			if (PersitentLevelManager.IsLevelCompleted("map_tutorial")) {
 				textManager.guiText.text = "Level already completed. Press E to enter the level...";
+				enterable = true;
 			}
 			else {
 				textManager.guiText.text = "Press E to enter the level...";
