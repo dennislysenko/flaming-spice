@@ -1,5 +1,15 @@
 ﻿<Properties>
 <<<<<<< HEAD
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="MonoDevelop.Default" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Custom Scripts\EnemyChase.js">
+    <Files>
+      <File FileName="Assets\Custom Scripts\MinerTrigger.cs" Line="20" Column="29" />
+      <File FileName="Assets\Custom Scripts\EgoSystem.cs" Line="481" Column="1" />
+      <File FileName="Assets\Standard Assets\Character Controllers\Sources\Scripts\CharacterMotor.js" Line="664" Column="1" />
+      <File FileName="Assets\Custom Scripts\ChangeIcon.js" Line="35" Column="9" />
+      <File FileName="Assets\Custom Scripts\EnemyChase.js" Line="13" Column="52" />
+=======
+<<<<<<< HEAD
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
   <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Custom Scripts\GuardScript.cs">
     <Files>
@@ -25,6 +35,7 @@
       <File FileName="Assets\Custom Scripts\LaserCPBehaviour.cs" Line="1" Column="1" />
       <File FileName="Assets\Custom Scripts\LaserBehaviour.cs" Line="5" Column="33" />
 >>>>>>> d18928de4927a37812e78fa0f31b38b7b3846f5f
+>>>>>>> 8df09f210d80232a64b322723dab09419f76fc12
     </Files>
   </MonoDevelop.Ide.Workbench>
 >>>>>>> c50e9c6229b04c05463c2d1a7905c80bbbdbb975
