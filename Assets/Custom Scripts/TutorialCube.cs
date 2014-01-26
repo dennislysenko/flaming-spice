@@ -42,6 +42,36 @@ public class TutorialCube : MonoBehaviour {
 				yield return new WaitForSeconds (5);
 				unlockShower.guiTexture.enabled = false;
 				break;
+			case 3:
+				unlockShower.guiTexture.texture = birdmanUnlocked;
+				unlockShower.guiTexture.enabled = true;
+				yield return new WaitForSeconds (5);
+				unlockShower.guiTexture.enabled = false;
+				break;
+			case 4:
+				unlockShower.guiTexture.texture = ninjaUnlocked;
+				unlockShower.guiTexture.enabled = true;
+				yield return new WaitForSeconds (5);
+				unlockShower.guiTexture.enabled = false;
+				break;
+			case 5:
+				unlockShower.guiTexture.texture = minerUnlocked;
+				unlockShower.guiTexture.enabled = true;
+				yield return new WaitForSeconds (5);
+				unlockShower.guiTexture.enabled = false;
+				break;
+			case 6:
+				unlockShower.guiTexture.texture = electricianUnlocked;
+				unlockShower.guiTexture.enabled = true;
+				yield return new WaitForSeconds (5);
+				unlockShower.guiTexture.enabled = false;
+				break;
+			case 7:
+				unlockShower.guiTexture.texture = ghostUnlocked;
+				unlockShower.guiTexture.enabled = true;
+				yield return new WaitForSeconds (5);
+				unlockShower.guiTexture.enabled = false;
+				break;
 			}
 		}
 	}
