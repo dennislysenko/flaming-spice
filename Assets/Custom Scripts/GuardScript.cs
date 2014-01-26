@@ -73,17 +73,18 @@ public class GuardScript : MonoBehaviour {
 			}
 		}
 
-		if(state == 1) {
-			//walkTowards = waypoints[wayPointToWalkTo].position;
-			if((transform.position - walkTowards).magnitude < wayPointTolerance) {
-				if(!isStationary)
-					wayPointToWalkTo = (1+wayPointToWalkTo)%waypoints.Length;
-				else
-					shouldMove = false;
-			}
-			else if(isStationary)
-				shouldMove = true;
-
+		if (state == 1) {
+						//walkTowards = waypoints[wayPointToWalkTo].position;
+						if ((transform.position - walkTowards).magnitude < wayPointTolerance) {
+								if (!isStationary)
+										wayPointToWalkTo = (1 + wayPointToWalkTo) % waypoints.Length;
+								else
+										shouldMove = false;
+						} else if (isStationary)
+								shouldMove = true;
+				}
+		if(state == 3) {
+			shouldMove = true;
 		}
 		Vector3 deltaPosition;
 			if (!shouldMove) {
