@@ -19,13 +19,19 @@ function Update () {
 			guiTexture.texture = thief;
 		break;
 		case 3:
-			guiTexture.texture = birdman;
-		break;
-		case 4:
 			guiTexture.texture = inventor;
 		break;
+		case 4:
+			guiTexture.texture = birdman;
+		break;
 		case 5:
+			guiTexture.texture = ninja;
+		break;
+		case 6:
 			guiTexture.texture = miner;
+		break;
+		case 7:
+			guiTexture.texture = electrician;
 		break;
 	}
 }

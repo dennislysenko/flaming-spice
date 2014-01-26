@@ -338,15 +338,15 @@ public class EgoSystem : MonoBehaviour {
 				changeEgo = thiefEgo;
 				egoDisplay.texture = thief;
 			} else if (Input.GetKey ("3")) {
-				changeEgo = ninjaEgo;
-				egoDisplay.texture = ninja;
+				changeEgo = inventorEgo;
+				egoDisplay.texture = inventor;
 			} else if (Input.GetKey ("4")) {
 				changeEgo = birdmanEgo;
 				egoDisplay.texture = birdman;
-			} else if (Input.GetKey ("6")) {
-				changeEgo = inventorEgo;
-				egoDisplay.texture = inventor;
 			} else if (Input.GetKey ("5")) {
+				changeEgo = ninjaEgo;
+				egoDisplay.texture = ninja;
+			} else if (Input.GetKey ("6")) {
 				changeEgo = minerEgo;
 				egoDisplay.texture = miner;
 			}
