@@ -50,7 +50,11 @@ public class PersistentLevelManager : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-
+		if (Input.GetKey (KeyCode.P)) {
+			mapsCompleted = 0;
+			PlayerPrefs.DeleteAll ();
+			Application.LoadLevel ("LevelSelect");
+		}
 	}
 
 	public static int GetUnlock(int index) {

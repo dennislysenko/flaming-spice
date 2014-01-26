@@ -402,7 +402,6 @@ public class EgoSystem : MonoBehaviour {
 		switchesLeftText.text = "Ego Switches Left: " + switchesLeft;
 
 		int mapsCompleted = PersistentLevelManager.GetMapsCompleted ();
-		Debug.Log (mapsCompleted + "adf");
 		if (mapsCompleted >= 0)
 			if (PersistentLevelManager.thiefIsUnlocked ())
 				maxEgo = 2;
@@ -410,7 +409,7 @@ public class EgoSystem : MonoBehaviour {
 			maxEgo++;
 		if (mapsCompleted >= 3)
 			maxEgo++;
-		if(mapsCompleted >= 4)
+		if (mapsCompleted >= 4)
 			maxEgo++;
 		if (mapsCompleted >= 5)
 			maxEgo++;
